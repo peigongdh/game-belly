@@ -11,6 +11,7 @@
     <modules>
         <module>game-gate</module>
         <module>game-center</module>
+        <module>game-demo</module>
     </modules>
 
 
