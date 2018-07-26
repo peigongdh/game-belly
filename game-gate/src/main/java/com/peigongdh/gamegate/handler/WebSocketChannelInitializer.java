@@ -1,4 +1,4 @@
-package handler;
+package com.peigongdh.gamegate.handler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

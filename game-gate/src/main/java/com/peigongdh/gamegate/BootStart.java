@@ -1,4 +1,6 @@
-import server.WebSocketServer;
+package com.peigongdh.gamegate;
+
+import com.peigongdh.gamegate.server.WebSocketServer;
 
 public class BootStart {
 

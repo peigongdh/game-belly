@@ -1,6 +1,6 @@
-package server;
+package com.peigongdh.gamegate.server;
 
-import handler.WebSocketChannelInitializer;
+import com.peigongdh.gamegate.handler.WebSocketChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -17,9 +17,9 @@ import java.util.Properties;
 
 public class WebSocketServer {
 
-    private final static String SERVER_PROPERTIES = "application.properties";
-
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+
+    private final static String SERVER_PROPERTIES = "application.properties";
 
     private int masterCount;
 
@@ -47,7 +47,7 @@ public class WebSocketServer {
         return channel;
     }
 
-    public boolean init() {
+    private boolean init() {
         boolean initSuccess = true;
         try {
             Properties properties = new Properties();
@@ -67,7 +67,10 @@ public class WebSocketServer {
     }
 
     public void start() {
-        init();
+        boolean initResult = init();
+        if (!initResult) {
+            logger.info("websocket server init error");
+        }
         EventLoopGroup masterGroup = new NioEventLoopGroup(masterCount);
         EventLoopGroup workerGroup = new NioEventLoopGroup(workerCount);
         try {

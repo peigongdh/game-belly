@@ -1,11 +1,11 @@
-package handler;
+package com.peigongdh.gamegate.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.HandlerUtil;
+import com.peigongdh.gamegate.util.HandlerUtil;
 
 public class ProxyBackendHandler extends ChannelInboundHandlerAdapter {
 

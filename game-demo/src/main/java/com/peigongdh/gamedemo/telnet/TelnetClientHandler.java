@@ -13,33 +13,25 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package echo;
+package com.peigongdh.gamedemo.telnet;
 
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-
-import java.util.Locale;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- * Handler implementation for the echo server.
+ * Handles a client-side channel.
  */
 @Sharable
-public class EchoServerHandler extends ChannelInboundHandlerAdapter {
+public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ctx.write(msg);
-    }
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.flush();
+    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        System.err.println(msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        // Close the connection when an exception is raised.
         cause.printStackTrace();
         ctx.close();
     }
