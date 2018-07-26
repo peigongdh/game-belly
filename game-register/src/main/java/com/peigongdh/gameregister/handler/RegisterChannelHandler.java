@@ -32,9 +32,12 @@ public class RegisterChannelHandler extends SimpleChannelInboundHandler<String> 
 
     private static final String EVENT_PING = "ping";
 
+    private static final String EVENT_PONG = "pong";
+
     private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
 
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        logger.debug("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
         String event = msgObject.getString("event");
         String gateAddress = this.getGateAddress();
@@ -51,6 +54,7 @@ public class RegisterChannelHandler extends SimpleChannelInboundHandler<String> 
                 break;
             case EVENT_PING:
                 // TODO: heartbeat
+
                 break;
             default:
                 logger.error("register unknown event: {}", msg);

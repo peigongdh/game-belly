@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Properties;
 
-public class WebSocketServer {
+public class WebSocketServer implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
@@ -93,4 +93,8 @@ public class WebSocketServer {
         }
     }
 
+    @Override
+    public void run() {
+        this.start();
+    }
 }

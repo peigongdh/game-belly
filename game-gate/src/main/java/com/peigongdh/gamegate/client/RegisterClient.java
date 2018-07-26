@@ -3,20 +3,42 @@ package com.peigongdh.gamegate.client;
 import com.peigongdh.gamegate.handler.RegisterHandlerInitializer;
 import com.peigongdh.gamegate.server.WebSocketServer;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RegisterClient {
+import java.io.IOException;
+import java.util.Properties;
+
+public class RegisterClient implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
+    private final static String CLIENT_PROPERTIES = "application.properties";
+
+    private String hostName;
+
+    private int port;
+
     private Bootstrap bootstrap;
 
+    private Channel channel;
+
     private boolean init() {
-        return true;
+        boolean initSuccess = true;
+        try {
+            Properties properties = new Properties();
+            properties.load(WebSocketServer.class.getClassLoader().getResourceAsStream(CLIENT_PROPERTIES));
+            hostName = properties.getProperty("register.hostname");
+            port = Integer.parseInt(properties.getProperty("register.port"));
+        } catch (IOException e) {
+            initSuccess = false;
+            e.printStackTrace();
+        }
+        return initSuccess;
     }
 
     public void start() {
@@ -27,12 +49,24 @@ public class RegisterClient {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             bootstrap = new Bootstrap();
-        } finally {
-            group.shutdownGracefully();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new RegisterHandlerInitializer());
+                    .handler(new RegisterHandlerInitializer(hostName, port));
+
+            channel = bootstrap.connect(hostName, port).sync().channel();
+            logger.info("register client start success");
+            channel.closeFuture().sync();
+        } catch (InterruptedException e) {
+            logger.info("register client start error");
+            e.printStackTrace();
+        } finally {
+            group.shutdownGracefully();
         }
+    }
+
+    @Override
+    public void run() {
+        this.start();
     }
 
 }
