@@ -11,6 +11,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +38,12 @@ public class RegisterChannelHandler extends SimpleChannelInboundHandler<String> 
 
     private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        logger.debug("channelActive");
+    }
+
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         logger.debug("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
@@ -84,5 +92,10 @@ public class RegisterChannelHandler extends SimpleChannelInboundHandler<String> 
         data.put("event", EVENT_BROADCAST_ADDRESS);
         data.put("address", address);
         return data.toJSONString();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        logger.error("register client disconnected!");
     }
 }
