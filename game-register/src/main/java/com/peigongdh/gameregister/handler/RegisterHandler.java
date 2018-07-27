@@ -1,8 +1,8 @@
 package com.peigongdh.gameregister.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.peigongdh.gameregister.server.RegisterServer;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -11,14 +11,13 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RegisterChannelHandler extends SimpleChannelInboundHandler<String> {
+@ChannelHandler.Sharable
+public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RegisterServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterHandler.class);
 
     /**
      * A thread-safe Set  Using ChannelGroup, you can categorize Channels into a meaningful group.
@@ -39,34 +38,33 @@ public class RegisterChannelHandler extends SimpleChannelInboundHandler<String> 
     private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        logger.debug("channelActive");
-    }
-
-    @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        logger.debug("channelRead0: {}", msg);
+        logger.info("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
         String event = msgObject.getString("event");
-        String gateAddress = this.getGateAddress();
-        switch (event) {
-            case EVENT_GATE_CONNECT:
-                gateChannels.add(ctx.channel());
-                for (Channel c : innerChannels) {
-                    c.writeAndFlush(gateAddress);
-                }
-                break;
-            case EVENT_INNER_CONNECT:
-                innerChannels.add(ctx.channel());
-                ctx.writeAndFlush(gateAddress);
-                break;
-            case EVENT_PING:
-                // TODO: heartbeat
-
-                break;
-            default:
-                logger.error("register unknown event: {}", msg);
-                ctx.close();
+        if (event != null) {
+            switch (event) {
+                case EVENT_GATE_CONNECT:
+                    gateChannels.add(ctx.channel());
+                    String gateAddress = this.getGateAddress();
+                    for (Channel c : innerChannels) {
+                        c.writeAndFlush(gateAddress);
+                    }
+                    break;
+                case EVENT_INNER_CONNECT:
+                    innerChannels.add(ctx.channel());
+                    ctx.writeAndFlush(this.getGateAddress());
+                    break;
+                case EVENT_PING:
+                    // TODO: heartbeat
+                    break;
+                default:
+                    logger.error("register unknown event: {}", msg);
+                    ctx.close();
+            }
+        } else {
+            logger.error("register unknown event: {}", msg);
+            ctx.close();
         }
     }
 

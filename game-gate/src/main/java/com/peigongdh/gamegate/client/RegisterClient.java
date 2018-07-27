@@ -1,6 +1,6 @@
 package com.peigongdh.gamegate.client;
 
-import com.peigongdh.gamegate.handler.RegisterHandlerInitializer;
+import com.peigongdh.gamegate.handler.RegisterChannelInitializer;
 import com.peigongdh.gamegate.server.WebSocketServer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -15,7 +15,7 @@ import java.util.Properties;
 
 public class RegisterClient implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterClient.class);
 
     private final static String CLIENT_PROPERTIES = "application.properties";
 
@@ -51,7 +51,7 @@ public class RegisterClient implements Runnable {
             bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new RegisterHandlerInitializer(hostName, port));
+                    .handler(new RegisterChannelInitializer(hostName, port));
 
             channel = bootstrap.connect(hostName, port).sync().channel();
             logger.info("register client start success");

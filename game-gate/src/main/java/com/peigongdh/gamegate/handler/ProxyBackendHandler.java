@@ -9,7 +9,7 @@ import com.peigongdh.gamegate.util.HandlerUtil;
 
 public class ProxyBackendHandler extends ChannelInboundHandlerAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketFrameHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxyBackendHandler.class);
 
     private final Channel inboundChannel;
 

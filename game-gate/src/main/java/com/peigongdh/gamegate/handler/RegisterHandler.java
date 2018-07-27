@@ -33,13 +33,13 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("event", EVENT_GATE_CONNECT);
         String json = jsonObject.toJSONString();
-        logger.debug("channelActive {}", json);
+        logger.info("channelActive {}", json);
         ctx.writeAndFlush(json);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        logger.debug("channelRead0: {}", msg);
+        logger.info("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
         String event = msgObject.getString("event");
         switch (event) {

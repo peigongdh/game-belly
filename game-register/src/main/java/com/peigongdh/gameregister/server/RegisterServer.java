@@ -7,8 +7,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +61,6 @@ public class RegisterServer {
             serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(masterGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new RegisterChannelInitializer())
                     .option(ChannelOption.SO_KEEPALIVE, keepAlive)
                     .option(ChannelOption.SO_BACKLOG, backlog);

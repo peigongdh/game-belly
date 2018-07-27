@@ -1,4 +1,4 @@
-package com.peigongdh.gameregister.handler;
+package com.peigongdh.gamegate.handler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -19,16 +19,23 @@ public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel
 
     private static final StringEncoder STRING_ENCODER = new StringEncoder(CharsetUtil.UTF_8);
 
-    protected void initChannel(SocketChannel ch) {
+    private String hostName;
+
+    private int port;
+
+    public RegisterChannelInitializer(String hostName, int port) {
+        this.hostName = hostName;
+        this.port = port;
+    }
+
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        // LengthFieldBasedFrameDecoder extends ByteToMessageDecoder
-        // Be aware that sub-classes of ByteToMessageDecoder MUST NOT annotated with @Sharable.
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES));
         pipeline.addLast(LENGTH_FIELD_PREPENDER);
-        // the encoder and decoder are static as these are sharable
         pipeline.addLast(STRING_DECODER);
         pipeline.addLast(STRING_ENCODER);
-        pipeline.addLast(new RegisterHandler());
+        pipeline.addLast(new RegisterHandler(hostName, port));
     }
 }
