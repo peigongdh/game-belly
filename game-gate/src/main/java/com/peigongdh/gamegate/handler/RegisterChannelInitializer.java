@@ -37,7 +37,7 @@ public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-        pipeline.addLast(new IdleStateHandler(0, 0, 10));
+        pipeline.addLast(new IdleStateHandler(0, 0, 5));
         pipeline.addLast(new RegisterHeartbeatHandler(registerClient));
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES));
         pipeline.addLast(LENGTH_FIELD_PREPENDER);

@@ -34,7 +34,7 @@ public class RegisterHeartbeatHandler extends ChannelInboundHandlerAdapter {
                             logger.info("try to reconnect");
                             registerClient.connect();
                         } else {
-                            logger.info("heartbeat success");
+                            logger.info("client heartbeat success");
                         }
                     });
             // .addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
