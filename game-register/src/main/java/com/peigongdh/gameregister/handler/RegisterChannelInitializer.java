@@ -9,6 +9,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
 
 public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -24,6 +25,7 @@ public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel
         // LengthFieldBasedFrameDecoder extends ByteToMessageDecoder
         // Be aware that sub-classes of ByteToMessageDecoder MUST NOT annotated with @Sharable.
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
+        pipeline.addLast(new IdleStateHandler(0, 0, 10));
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES));
         pipeline.addLast(LENGTH_FIELD_PREPENDER);
         // the encoder and decoder are static as these are sharable

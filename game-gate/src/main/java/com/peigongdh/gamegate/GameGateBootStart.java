@@ -6,9 +6,7 @@ import com.peigongdh.gamegate.server.WebSocketServer;
 public class GameGateBootStart {
 
     public static void main(String[] args) {
-//        new Thread(new WebSocketServer()).start();
-//        new Thread(new RegisterClient()).start();
-//        new WebSocketServer().start();
-        new RegisterClient().start();
+        new Thread(() -> new WebSocketServer().start()).start();
+        new Thread(() -> new RegisterClient().start()).start();
     }
 }

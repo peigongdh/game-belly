@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Properties;
 
-public class WebSocketServer implements Runnable {
+public class WebSocketServer {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
@@ -77,7 +77,6 @@ public class WebSocketServer implements Runnable {
             serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(masterGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new WebSocketChannelInitializer(innerHostname, innerPort))
                     .option(ChannelOption.SO_KEEPALIVE, keepAlive)
                     .option(ChannelOption.SO_BACKLOG, backlog);
@@ -91,10 +90,5 @@ public class WebSocketServer implements Runnable {
             masterGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-    }
-
-    @Override
-    public void run() {
-        this.start();
     }
 }

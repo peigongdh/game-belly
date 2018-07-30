@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Properties;
 
-public class RegisterClient implements Runnable {
+public class RegisterClient {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterClient.class);
 
@@ -51,22 +51,21 @@ public class RegisterClient implements Runnable {
             bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new RegisterChannelInitializer(hostName, port));
+                    .handler(new RegisterChannelInitializer(this, hostName, port));
 
-            channel = bootstrap.connect(hostName, port).sync().channel();
-            logger.info("register client start success");
-            channel.closeFuture().sync();
-        } catch (InterruptedException e) {
-            logger.info("register client start error");
-            e.printStackTrace();
+            connect();
         } finally {
             group.shutdownGracefully();
         }
     }
 
-    @Override
-    public void run() {
-        this.start();
+    public void connect() {
+        try {
+            channel = bootstrap.connect(hostName, port).sync().channel();
+            logger.info("register client connect success");
+            channel.closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
 }
