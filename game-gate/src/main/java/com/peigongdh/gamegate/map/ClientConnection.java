@@ -1,12 +1,15 @@
 package com.peigongdh.gamegate.map;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.AttributeKey;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ClientConnection {
 
     private static final AtomicLong clientIdGenerator = new AtomicLong(0);
+
+    public static AttributeKey<Long> CLIENT_ID = AttributeKey.valueOf("");
 
     private Long clientId;
 
@@ -21,6 +24,7 @@ public class ClientConnection {
     public ClientConnection(ChannelHandlerContext ctx) {
         this.clientId = generateClientId();
         this.ctx = ctx;
+        // this.ctx.channel().attr();
     }
 
     public Long getClientId() {
