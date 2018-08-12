@@ -1,5 +1,6 @@
 package com.peigongdh.gameregister.handler;
 
+import com.peigongdh.gameregister.map.GateConnectionMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;

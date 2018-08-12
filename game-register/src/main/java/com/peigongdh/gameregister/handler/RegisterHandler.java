@@ -1,6 +1,7 @@
 package com.peigongdh.gameregister.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.peigongdh.gameregister.map.GateConnectionMap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,11 +32,13 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     private static final String EVENT_INNER_CONNECT = "inner_connect";
 
-    private static final String EVENT_PING = "ping";
-
-    private static final String EVENT_PONG = "pong";
-
     private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
+
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        GateConnectionMap.addGateConnection(ctx);
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
@@ -45,6 +48,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         if (event != null) {
             switch (event) {
                 case EVENT_GATE_CONNECT:
+
                     gateChannels.add(ctx.channel());
                     String gateAddress = this.getGateAddress();
                     for (Channel c : innerChannels) {
@@ -54,9 +58,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
                 case EVENT_INNER_CONNECT:
                     innerChannels.add(ctx.channel());
                     ctx.writeAndFlush(this.getGateAddress());
-                    break;
-                case EVENT_PING:
-                    // TODO: heartbeat
                     break;
                 default:
                     logger.error("register unknown event: {}", msg);
@@ -70,6 +71,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        GateConnectionMap.removeGateConnection(ctx);
         cause.printStackTrace();
         // if is gate channel broadcast to each inner channel
         if (gateChannels.contains(ctx.channel())) {
@@ -94,6 +96,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        GateConnectionMap.removeGateConnection(ctx);
         logger.error("register client disconnected!");
     }
 }

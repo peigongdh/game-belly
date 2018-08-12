@@ -29,9 +29,9 @@ public class ClientConnectionMap {
 
     public static void addClientConnection(ChannelHandlerContext ctx) {
         // FIXME: login again should remove one of before
-        ClientConnection clientConnection = new ClientConnection(ctx);
+        ClientConnection conn = new ClientConnection(ctx);
 
-        if (clientConnectionMap.putIfAbsent(clientConnection.getClientId(), clientConnection) != null) {
+        if (clientConnectionMap.putIfAbsent(conn.getClientId(), conn) != null) {
             logger.error("duplicated clientId");
         }
     }
