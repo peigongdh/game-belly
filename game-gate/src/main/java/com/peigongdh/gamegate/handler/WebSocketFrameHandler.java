@@ -1,5 +1,7 @@
 package com.peigongdh.gamegate.handler;
 
+import com.peigongdh.gamegate.map.ClientConnection;
+import com.peigongdh.gamegate.map.ClientConnectionMap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
@@ -28,6 +30,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
+        ClientConnectionMap.addClientConnection(ctx);
         final Channel inboundChannel = ctx.channel();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(inboundChannel.eventLoop())
@@ -74,6 +77,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        ClientConnectionMap.removeClientConnection(ctx);
         if (outboundChannel != null) {
             HandlerUtil.closeOnFlush(outboundChannel);
         }
@@ -81,6 +85,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        ClientConnectionMap.removeClientConnection(ctx);
         cause.printStackTrace();
         HandlerUtil.closeOnFlush(ctx.channel());
     }

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class ClientConnectionMap {
 
@@ -14,11 +13,11 @@ public class ClientConnectionMap {
     public static ConcurrentHashMap<Long, ClientConnection> clientConnectionMap = new ConcurrentHashMap<>();
 
     public static ClientConnection getClientConnection(ChannelHandlerContext ctx) {
-        // Long clientId = ctx.channel().attr("");
-        return null;
+        Long clientId = ctx.channel().attr(ClientConnection.CLIENT_ID).get();
+        return getClientConnection(clientId);
     }
 
-    public static ClientConnection getClinetConnection(Long clientId) {
+    public static ClientConnection getClientConnection(Long clientId) {
         ClientConnection conn = clientConnectionMap.get(clientId);
         if (conn != null) {
             return conn;
@@ -38,6 +37,16 @@ public class ClientConnectionMap {
     }
 
     public static void removeClientConnection(ChannelHandlerContext ctx) {
-        // ClientConnection clientConnection =
+        ClientConnection conn = getClientConnection(ctx);
+        if (null == conn) {
+            logger.error("conn not found when remove clientConnection");
+            return;
+        }
+        Long clientId = conn.getClientId();
+        if (clientConnectionMap.remove(clientId) != null) {
+            // TODO
+        } else {
+            logger.error("clientId {} not found in clientConnectionMap", clientId);
+        }
     }
 }
