@@ -5,33 +5,33 @@ import io.netty.util.AttributeKey;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class GateConnection {
+public class InnerConnection {
     
-    private static final AtomicLong gateIdGenerator = new AtomicLong(0);
+    private static final AtomicLong InnerIdGenerator = new AtomicLong(0);
 
-    public static AttributeKey<Long> GATE_ID = AttributeKey.valueOf("gateId");
+    public static AttributeKey<Long> INNER_ID = AttributeKey.valueOf("innerId");
 
-    private Long gateId;
+    private Long innerId;
 
     private String address;
 
     private ChannelHandlerContext ctx;
 
-    private static Long generateGateId() {
-        return gateIdGenerator.incrementAndGet();
+    private static Long generateInnerId() {
+        return InnerIdGenerator.incrementAndGet();
     }
 
-    public GateConnection(ChannelHandlerContext ctx) {
-        this.gateId = generateGateId();
+    public InnerConnection(ChannelHandlerContext ctx) {
+        this.innerId = generateInnerId();
         this.ctx = ctx;
     }
 
-    public Long getGateId() {
-        return gateId;
+    public Long getInnerId() {
+        return innerId;
     }
 
-    public void setGateId(Long gateId) {
-        this.gateId = gateId;
+    public void setInnerId(Long innerId) {
+        this.innerId = innerId;
     }
 
     public String getAddress() {

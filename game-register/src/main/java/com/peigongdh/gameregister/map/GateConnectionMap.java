@@ -28,7 +28,7 @@ public class GateConnectionMap {
     }
 
     public static void addGateConnection(ChannelHandlerContext ctx) {
-        // FIXME: login again should remove one of before
+        // FIXME: add again should remove one of before
         GateConnection conn = new GateConnection(ctx);
 
         if (gateConnectionMap.putIfAbsent(conn.getGateId(), conn) != null) {
