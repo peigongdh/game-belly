@@ -5,13 +5,9 @@ import com.peigongdh.gameregister.map.GateConnection;
 import com.peigongdh.gameregister.map.GateConnectionMap;
 import com.peigongdh.gameregister.map.InnerConnection;
 import com.peigongdh.gameregister.map.InnerConnectionMap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +31,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, String msg) {
         logger.info("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
         String event = msgObject.getString("event");
@@ -71,6 +67,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         for (InnerConnection innerConnection : InnerConnectionMap.innerConnectionMap.values()) {
             innerConnection.getCtx().writeAndFlush(gateAddress);
         }
+        InnerConnectionMap.removeInnerConnection(ctx);
         ctx.close();
     }
 

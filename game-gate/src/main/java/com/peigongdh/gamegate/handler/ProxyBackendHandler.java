@@ -1,13 +1,12 @@
 package com.peigongdh.gamegate.handler;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.peigongdh.gamegate.util.HandlerUtil;
 
-public class ProxyBackendHandler extends ChannelInboundHandlerAdapter {
+public class ProxyBackendHandler extends SimpleChannelInboundHandler<String> {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyBackendHandler.class);
 
@@ -23,8 +22,8 @@ public class ProxyBackendHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(final ChannelHandlerContext ctx, Object msg) {
-        inboundChannel.writeAndFlush(new TextWebSocketFrame((ByteBuf) msg)).addListener((ChannelFutureListener) future -> {
+    protected void channelRead0(ChannelHandlerContext ctx, String s) {
+        inboundChannel.writeAndFlush(new TextWebSocketFrame(s)).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 // was able to flush out data, start to read the next chunk
                 logger.info("ProxyBackendHandler {} isSuccess: {}", ctx.channel(), future.isSuccess());

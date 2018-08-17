@@ -13,6 +13,7 @@
         <module>game-center</module>
         <module>game-demo</module>
         <module>game-register</module>
+        <module>game-inner</module>
     </modules>
 
 

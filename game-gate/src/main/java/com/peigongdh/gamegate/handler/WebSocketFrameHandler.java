@@ -1,14 +1,11 @@
 package com.peigongdh.gamegate.handler;
 
-import com.peigongdh.gamegate.map.ClientConnection;
 import com.peigongdh.gamegate.map.ClientConnectionMap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.peigongdh.gamegate.util.HandlerUtil;
@@ -35,8 +32,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(inboundChannel.eventLoop())
                 .channel(ctx.channel().getClass())
-                .handler(new LoggingHandler(LogLevel.INFO))
-                .handler(new ProxyBackendHandler(inboundChannel))
+                .handler(new ProxyBackendInitializer(inboundChannel))
                 .option(ChannelOption.AUTO_READ, false);
         ChannelFuture channelFuture = bootstrap.connect(innerHostName, innerPort);
         outboundChannel = channelFuture.channel();
@@ -50,7 +46,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) {
         // ping and pong frames already handled
 
         if (frame instanceof TextWebSocketFrame) {
