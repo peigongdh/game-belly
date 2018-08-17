@@ -1,7 +1,6 @@
-package com.peigongdh.gamegate.client;
+package com.peigongdh.gameinner.client;
 
-import com.peigongdh.gamegate.handler.RegisterChannelInitializer;
-import com.peigongdh.gamegate.server.WebSocketServer;
+import com.peigongdh.gameinner.handler.RegisterChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;

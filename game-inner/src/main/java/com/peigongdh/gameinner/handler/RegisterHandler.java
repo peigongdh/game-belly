@@ -1,4 +1,4 @@
-package com.peigongdh.gamegate.handler;
+package com.peigongdh.gameinner.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.ChannelHandlerContext;
@@ -29,7 +29,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("event", EVENT_GATE_CONNECT);
+        jsonObject.put("event", EVENT_INNER_CONNECT);
         String json = jsonObject.toJSONString();
         logger.info("channelActive {}", json);
         ctx.writeAndFlush(json);
@@ -42,7 +42,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         String event = msgObject.getString("event");
         switch (event) {
             case EVENT_BROADCAST_ADDRESS:
-                // TODO
                 logger.info("EVENT_BROADCAST_ADDRESS {}");
                 break;
             case EVENT_INNER_CONNECT:
