@@ -26,11 +26,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        GateConnectionMap.addGateConnection(ctx);
-    }
-
-    @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) {
         logger.info("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
@@ -38,7 +33,8 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         if (event != null) {
             switch (event) {
                 case EVENT_GATE_CONNECT:
-                    GateConnectionMap.addGateConnection(ctx);
+                    String address = msgObject.getString("address");
+                    GateConnectionMap.addGateConnection(ctx, address);
                     String gateAddress = this.getGateAddress();
                     for (InnerConnection innerConnection : InnerConnectionMap.innerConnectionMap.values()) {
                         innerConnection.getCtx().writeAndFlush(gateAddress);

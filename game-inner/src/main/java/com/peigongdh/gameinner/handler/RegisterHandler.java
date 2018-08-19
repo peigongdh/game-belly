@@ -26,7 +26,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("event", EVENT_INNER_CONNECT);
         String json = jsonObject.toJSONString();
-        logger.info("channelActive {}", json);
         ctx.writeAndFlush(json);
     }
 

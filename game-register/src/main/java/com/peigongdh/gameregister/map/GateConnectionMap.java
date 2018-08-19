@@ -27,9 +27,9 @@ public class GateConnectionMap {
         return null;
     }
 
-    public static void addGateConnection(ChannelHandlerContext ctx) {
+    public static void addGateConnection(ChannelHandlerContext ctx, String address) {
         // FIXME: add again should remove one of before
-        GateConnection conn = new GateConnection(ctx);
+        GateConnection conn = new GateConnection(ctx, address);
 
         if (gateConnectionMap.putIfAbsent(conn.getGateId(), conn) != null) {
             logger.error("duplicated gateId");

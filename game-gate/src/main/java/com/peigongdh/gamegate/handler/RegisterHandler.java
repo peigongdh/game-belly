@@ -32,7 +32,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         jsonObject.put("event", EVENT_GATE_CONNECT);
         jsonObject.put("address", gateLanIp + ':' + gateLanPort);
         String json = jsonObject.toJSONString();
-        logger.info("channelActive {}", json);
         ctx.writeAndFlush(json);
     }
 
@@ -45,12 +44,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
             case EVENT_BROADCAST_ADDRESS:
                 // TODO
                 logger.info("EVENT_BROADCAST_ADDRESS {}");
-                break;
-            case EVENT_INNER_CONNECT:
-                logger.info("EVENT_INNER_CONNECT {}");
-                break;
-            case EVENT_GATE_CONNECT:
-                logger.info("EVENT_GATE_CONNECT {}");
                 break;
             default:
                 ctx.close();
