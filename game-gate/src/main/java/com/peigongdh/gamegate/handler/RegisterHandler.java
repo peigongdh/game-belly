@@ -17,19 +17,20 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     private static final String EVENT_INNER_CONNECT = "inner_connect";
 
-    private String hostName;
+    private String gateLanIp;
 
-    private int port;
+    private int gateLanPort;
 
-    public RegisterHandler(String hostName, int port) {
-        this.hostName = hostName;
-        this.port = port;
+    public RegisterHandler(String gateLanIp, int gateLanPort) {
+        this.gateLanIp = gateLanIp;
+        this.gateLanPort = gateLanPort;
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("event", EVENT_GATE_CONNECT);
+        jsonObject.put("address", gateLanIp + ':' + gateLanPort);
         String json = jsonObject.toJSONString();
         logger.info("channelActive {}", json);
         ctx.writeAndFlush(json);

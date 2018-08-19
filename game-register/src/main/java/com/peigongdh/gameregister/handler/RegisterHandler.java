@@ -73,12 +73,12 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     private String getGateAddress() {
         JSONObject data = new JSONObject();
-        Set<String> address = new HashSet<>();
+        Set<String> addresses = new HashSet<>();
         for (GateConnection gateConnection : GateConnectionMap.gateConnectionMap.values()) {
-            address.add(gateConnection.getAddress());
+            addresses.add(gateConnection.getAddress());
         }
         data.put("event", EVENT_BROADCAST_ADDRESS);
-        data.put("address", address);
+        data.put("addresses", addresses);
         return data.toJSONString();
     }
 

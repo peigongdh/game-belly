@@ -18,9 +18,9 @@ public class RegisterClient {
 
     private final static String CLIENT_PROPERTIES = "application.properties";
 
-    private String hostName;
+    private String registerHostName;
 
-    private int port;
+    private int registerPort;
 
     private Bootstrap bootstrap;
 
@@ -31,8 +31,8 @@ public class RegisterClient {
         try {
             Properties properties = new Properties();
             properties.load(RegisterClient.class.getClassLoader().getResourceAsStream(CLIENT_PROPERTIES));
-            hostName = properties.getProperty("register.hostname");
-            port = Integer.parseInt(properties.getProperty("register.port"));
+            registerHostName = properties.getProperty("register.hostname");
+            registerPort = Integer.parseInt(properties.getProperty("register.port"));
         } catch (IOException e) {
             initSuccess = false;
             e.printStackTrace();
@@ -43,14 +43,14 @@ public class RegisterClient {
     public void start() {
         boolean initResult = init();
         if (!initResult) {
-            logger.info("register client init error");
+            logger.info("in game inner register client init error");
         }
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new RegisterChannelInitializer(this, hostName, port));
+                    .handler(new RegisterChannelInitializer(this));
 
             connect();
         } finally {
@@ -60,8 +60,8 @@ public class RegisterClient {
 
     public void connect() {
         try {
-            channel = bootstrap.connect(hostName, port).sync().channel();
-            logger.info("register client connect success");
+            channel = bootstrap.connect(registerHostName, registerPort).sync().channel();
+            logger.info("in game inner register client connect success");
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

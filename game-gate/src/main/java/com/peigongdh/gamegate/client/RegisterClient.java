@@ -1,7 +1,6 @@
 package com.peigongdh.gamegate.client;
 
 import com.peigongdh.gamegate.handler.RegisterChannelInitializer;
-import com.peigongdh.gamegate.server.WebSocketServer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -19,9 +18,13 @@ public class RegisterClient {
 
     private final static String CLIENT_PROPERTIES = "application.properties";
 
-    private String hostName;
+    private String registerHostName;
 
-    private int port;
+    private int registerPort;
+
+    private String gateLanIp;
+
+    private int gateLanPort;
 
     private Bootstrap bootstrap;
 
@@ -32,8 +35,10 @@ public class RegisterClient {
         try {
             Properties properties = new Properties();
             properties.load(RegisterClient.class.getClassLoader().getResourceAsStream(CLIENT_PROPERTIES));
-            hostName = properties.getProperty("register.hostname");
-            port = Integer.parseInt(properties.getProperty("register.port"));
+            registerHostName = properties.getProperty("register.hostname");
+            registerPort = Integer.parseInt(properties.getProperty("register.port"));
+            gateLanIp = properties.getProperty("gate.lanIp");
+            gateLanPort = Integer.parseInt(properties.getProperty("gate.lanPort"));
         } catch (IOException e) {
             initSuccess = false;
             e.printStackTrace();
@@ -44,14 +49,14 @@ public class RegisterClient {
     public void start() {
         boolean initResult = init();
         if (!initResult) {
-            logger.info("register client init error");
+            logger.info("in game gate register client init error");
         }
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new RegisterChannelInitializer(this, hostName, port));
+                    .handler(new RegisterChannelInitializer(this, gateLanIp, gateLanPort));
 
             connect();
         } finally {
@@ -61,8 +66,8 @@ public class RegisterClient {
 
     public void connect() {
         try {
-            channel = bootstrap.connect(hostName, port).sync().channel();
-            logger.info("register client connect success");
+            channel = bootstrap.connect(registerHostName, registerPort).sync().channel();
+            logger.info("in game gate register client connect success");
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

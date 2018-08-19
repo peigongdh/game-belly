@@ -1,10 +1,16 @@
 package com.peigongdh.gameinner.handler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.peigongdh.gameinner.map.GateConnectionMap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class RegisterHandler extends SimpleChannelInboundHandler<String> {
@@ -13,18 +19,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
 
-    private static final String EVENT_GATE_CONNECT = "gate_connect";
-
     private static final String EVENT_INNER_CONNECT = "inner_connect";
-
-    private String hostName;
-
-    private int port;
-
-    public RegisterHandler(String hostName, int port) {
-        this.hostName = hostName;
-        this.port = port;
-    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -36,21 +31,20 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, String msg) {
         logger.info("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
         String event = msgObject.getString("event");
         switch (event) {
             case EVENT_BROADCAST_ADDRESS:
-                logger.info("EVENT_BROADCAST_ADDRESS {}");
-                break;
-            case EVENT_INNER_CONNECT:
-                logger.info("EVENT_INNER_CONNECT {}");
-                break;
-            case EVENT_GATE_CONNECT:
-                logger.info("EVENT_GATE_CONNECT {}");
+                JSONArray addresses = msgObject.getJSONArray("addresses");
+                for (Object addressObject : addresses) {
+                    String address = (String) addressObject;
+                    logger.info("address {}: ", address);
+                }
                 break;
             default:
+                logger.info("undefined event {}", event);
                 ctx.close();
         }
     }

@@ -23,14 +23,14 @@ public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel
 
     private RegisterClient registerClient;
 
-    private String hostName;
+    private String gateLanIp;
 
-    private int port;
+    private int gateLanPort;
 
-    public RegisterChannelInitializer(RegisterClient registerClient, String hostName, int port) {
+    public RegisterChannelInitializer(RegisterClient registerClient, String gateLanIp, int gateLanPort) {
         this.registerClient = registerClient;
-        this.hostName = hostName;
-        this.port = port;
+        this.gateLanIp = gateLanIp;
+        this.gateLanPort = gateLanPort;
     }
 
     @Override
@@ -43,6 +43,6 @@ public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast(LENGTH_FIELD_PREPENDER);
         pipeline.addLast(STRING_DECODER);
         pipeline.addLast(STRING_ENCODER);
-        pipeline.addLast(new RegisterHandler(hostName, port));
+        pipeline.addLast(new RegisterHandler(gateLanIp, gateLanPort));
     }
 }
