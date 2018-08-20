@@ -20,7 +20,7 @@ public class RegisterHeartbeatHandler extends ChannelInboundHandlerAdapter {
 
     private RegisterClient registerClient;
 
-    public RegisterHeartbeatHandler(RegisterClient registerClient) {
+    RegisterHeartbeatHandler(RegisterClient registerClient) {
         this.registerClient = registerClient;
     }
 

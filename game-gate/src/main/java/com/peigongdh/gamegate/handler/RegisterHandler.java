@@ -15,13 +15,11 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     private static final String EVENT_GATE_CONNECT = "gate_connect";
 
-    private static final String EVENT_INNER_CONNECT = "inner_connect";
-
     private String gateLanIp;
 
     private int gateLanPort;
 
-    public RegisterHandler(String gateLanIp, int gateLanPort) {
+    RegisterHandler(String gateLanIp, int gateLanPort) {
         this.gateLanIp = gateLanIp;
         this.gateLanPort = gateLanPort;
     }
@@ -36,7 +34,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, String msg) {
         logger.info("channelRead0: {}", msg);
         JSONObject msgObject = JSONObject.parseObject(msg);
         String event = msgObject.getString("event");

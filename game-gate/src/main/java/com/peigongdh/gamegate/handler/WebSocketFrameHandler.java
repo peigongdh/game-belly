@@ -20,7 +20,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
     private Channel outboundChannel;
 
-    public WebSocketFrameHandler(String innerHostName, int innerPort) {
+    WebSocketFrameHandler(String innerHostName, int innerPort) {
         this.innerHostName = innerHostName;
         this.innerPort = innerPort;
     }

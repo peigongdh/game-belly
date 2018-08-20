@@ -22,7 +22,7 @@ public class ProxyBackendInitializer extends ChannelInitializer<SocketChannel> {
 
     private final Channel inboundChannel;
 
-    public ProxyBackendInitializer(Channel inboundChannel) {
+    ProxyBackendInitializer(Channel inboundChannel) {
         this.inboundChannel = inboundChannel;
     }
 
