@@ -11,8 +11,6 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterHandler.class);
 
-    private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
-
     private static final String EVENT_GATE_CONNECT = "gate_connect";
 
     private String gateLanIp;
@@ -35,17 +33,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) {
-        logger.info("channelRead0: {}", msg);
-        JSONObject msgObject = JSONObject.parseObject(msg);
-        String event = msgObject.getString("event");
-        switch (event) {
-            case EVENT_BROADCAST_ADDRESS:
-                // TODO
-                logger.info("EVENT_BROADCAST_ADDRESS {}");
-                break;
-            default:
-                ctx.close();
-        }
+        logger.info("game gate register client channelRead0: {}", msg);
     }
 
     @Override
