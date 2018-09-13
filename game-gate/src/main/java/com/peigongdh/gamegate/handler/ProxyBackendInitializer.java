@@ -14,7 +14,8 @@ import io.netty.util.CharsetUtil;
 
 public class ProxyBackendInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static final LengthFieldPrepender LENGTH_FIELD_PREPENDER = new LengthFieldPrepender(Integer.BYTES);
+    // FIXME: now test for workerman frame protocol
+    private static final LengthFieldPrepender LENGTH_FIELD_PREPENDER = new LengthFieldPrepender(Integer.BYTES, true);
 
     private static final StringDecoder STRING_DECODER = new StringDecoder(CharsetUtil.UTF_8);
 
