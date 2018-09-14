@@ -31,7 +31,8 @@ public class ProxyBackendInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) {
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES));
+        // FIXME: now test for workerman frame protocol
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, -Integer.BYTES, Integer.BYTES));
         pipeline.addLast(LENGTH_FIELD_PREPENDER);
         pipeline.addLast(STRING_DECODER);
         pipeline.addLast(STRING_ENCODER);
