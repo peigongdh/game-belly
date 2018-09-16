@@ -26,6 +26,14 @@ public class Area {
 
     private Consumer<Area> emptyCallback;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getX() {
         return x;
     }
@@ -56,6 +64,22 @@ public class Area {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public ConcurrentHashMap<Integer, Entity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(ConcurrentHashMap<Integer, Entity> entities) {
+        this.entities = entities;
     }
 
     public Area(int id, int x, int y, int width, int height, World world) {

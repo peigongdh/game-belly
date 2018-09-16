@@ -142,7 +142,7 @@ public class Mob extends Character {
         this.moveCallback = callback;
     }
 
-    private void move(int x, int y) {
+    public void move(int x, int y) {
         this.setPosition(x, y);
         if (null != this.moveCallback) {
             moveCallback.accept(this);
