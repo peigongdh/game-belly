@@ -1,5 +1,6 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
+import com.peigongdh.gameinner.browserquest.common.Properties;
 import com.peigongdh.gameinner.browserquest.domain.message.Drop;
 import com.peigongdh.gameinner.browserquest.util.Util;
 

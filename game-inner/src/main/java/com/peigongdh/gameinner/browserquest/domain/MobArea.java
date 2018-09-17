@@ -1,6 +1,7 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
 import com.peigongdh.gameinner.browserquest.common.Constant;
+import com.peigongdh.gameinner.browserquest.common.Types;
 
 import java.util.Random;
 import java.util.Timer;

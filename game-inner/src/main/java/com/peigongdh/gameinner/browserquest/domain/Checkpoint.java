@@ -25,8 +25,8 @@ public class Checkpoint {
     public Position getRandomPosition() {
         Position pos = new Position();
         Random random = new Random();
-        pos.setX(this.x + random.nextInt(this.width - 1));
-        pos.setY(this.y + random.nextInt(this.height - 1));
+        pos.setX(this.x + random.nextInt(this.width));
+        pos.setY(this.y + random.nextInt(this.height));
         return pos;
     }
 }
