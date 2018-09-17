@@ -53,7 +53,7 @@ public class TelnetClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(DECODER);
         pipeline.addLast(ENCODER);
 
-        // and then business logic.
+        // and then browserquest logic.
         pipeline.addLast(CLIENT_HANDLER);
     }
 }
