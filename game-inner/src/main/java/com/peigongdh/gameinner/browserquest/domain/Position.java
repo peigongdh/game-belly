@@ -29,4 +29,16 @@ public class Position {
         this.x = x;
         this.y = y;
     }
+
+    public String toGroupId() {
+        return this.x + "-" + this.y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            return ((Position) obj).getX() == x && ((Position) obj).getY() == y;
+        }
+        return false;
+    }
 }
