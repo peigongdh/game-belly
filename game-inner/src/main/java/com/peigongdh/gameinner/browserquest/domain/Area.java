@@ -146,4 +146,8 @@ public class Area {
     public void onEmpty(Consumer<Area> callback) {
         this.emptyCallback = callback;
     }
+
+    public void setNumberOfEntities(int nb) {
+        this.nbEntities = nb;
+    }
 }

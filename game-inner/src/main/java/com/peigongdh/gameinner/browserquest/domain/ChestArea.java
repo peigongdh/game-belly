@@ -1,16 +1,16 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 public class ChestArea extends Area {
 
-    private ConcurrentHashMap<Integer, Item> items;
+    private List<Integer> items;
 
     private int chestX;
 
     private int chestY;
 
-    public ChestArea(int id, int x, int y, int width, int height, World world, ConcurrentHashMap<Integer, Item> items, int chestX, int chestY) {
+    public ChestArea(int id, int x, int y, int width, int height, World world, List<Integer> items, int chestX, int chestY) {
         super(id, x, y, width, height, world);
         this.items = items;
         this.chestX = chestX;

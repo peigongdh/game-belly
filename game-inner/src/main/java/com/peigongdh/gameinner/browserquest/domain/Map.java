@@ -47,6 +47,150 @@ public class Map {
 
     private String filePath;
 
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public List<Integer> getCollisions() {
+        return collisions;
+    }
+
+    public void setCollisions(List<Integer> collisions) {
+        this.collisions = collisions;
+    }
+
+    public List<MobAreaConfig> getMobAreas() {
+        return mobAreas;
+    }
+
+    public void setMobAreas(List<MobAreaConfig> mobAreas) {
+        this.mobAreas = mobAreas;
+    }
+
+    public List<ChestAreaConfig> getChestAreas() {
+        return chestAreas;
+    }
+
+    public void setChestAreas(List<ChestAreaConfig> chestAreas) {
+        this.chestAreas = chestAreas;
+    }
+
+    public List<StaticChestConfig> getStaticChests() {
+        return staticChests;
+    }
+
+    public void setStaticChests(List<StaticChestConfig> staticChests) {
+        this.staticChests = staticChests;
+    }
+
+    public java.util.Map<Integer, String> getStaticEntities() {
+        return staticEntities;
+    }
+
+    public void setStaticEntities(java.util.Map<Integer, String> staticEntities) {
+        this.staticEntities = staticEntities;
+    }
+
+    public java.util.Map<Integer, Checkpoint> getCheckpoints() {
+        return checkpoints;
+    }
+
+    public void setCheckpoints(java.util.Map<Integer, Checkpoint> checkpoints) {
+        this.checkpoints = checkpoints;
+    }
+
+    public List<Checkpoint> getStartingAreas() {
+        return startingAreas;
+    }
+
+    public void setStartingAreas(List<Checkpoint> startingAreas) {
+        this.startingAreas = startingAreas;
+    }
+
+    public int getZoneWidth() {
+        return zoneWidth;
+    }
+
+    public void setZoneWidth(int zoneWidth) {
+        this.zoneWidth = zoneWidth;
+    }
+
+    public int getZoneHeight() {
+        return zoneHeight;
+    }
+
+    public void setZoneHeight(int zoneHeight) {
+        this.zoneHeight = zoneHeight;
+    }
+
+    public int getGroupWidth() {
+        return groupWidth;
+    }
+
+    public void setGroupWidth(int groupWidth) {
+        this.groupWidth = groupWidth;
+    }
+
+    public int getGroupHeight() {
+        return groupHeight;
+    }
+
+    public void setGroupHeight(int groupHeight) {
+        this.groupHeight = groupHeight;
+    }
+
+    public Consumer<Map> getReadyCallback() {
+        return readyCallback;
+    }
+
+    public void setReadyCallback(Consumer<Map> readyCallback) {
+        this.readyCallback = readyCallback;
+    }
+
+    public java.util.Map<String, List<Position>> getConnectedGroups() {
+        return connectedGroups;
+    }
+
+    public void setConnectedGroups(java.util.Map<String, List<Position>> connectedGroups) {
+        this.connectedGroups = connectedGroups;
+    }
+
+    public int[][] getGrid() {
+        return grid;
+    }
+
+    public void setGrid(int[][] grid) {
+        this.grid = grid;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     public Map(String filePath) {
         this.filePath = filePath;
         this.loaded = false;
