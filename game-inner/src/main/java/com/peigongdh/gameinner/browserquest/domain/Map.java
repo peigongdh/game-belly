@@ -39,7 +39,7 @@ public class Map {
 
     private int groupHeight;
 
-    private Consumer<Map> readyCallback;
+    private Runnable readyCallback;
 
     private java.util.Map<String, List<Position>> connectedGroups;
 
@@ -159,11 +159,11 @@ public class Map {
         this.groupHeight = groupHeight;
     }
 
-    public Consumer<Map> getReadyCallback() {
+    public Runnable getReadyCallback() {
         return readyCallback;
     }
 
-    public void setReadyCallback(Consumer<Map> readyCallback) {
+    public void setReadyCallback(Runnable readyCallback) {
         this.readyCallback = readyCallback;
     }
 
@@ -229,13 +229,13 @@ public class Map {
         this.initCheckpoints(checkpoints);
 
         if (null != this.readyCallback) {
-            readyCallback.accept(this);
+            readyCallback.run();
         }
 
         this.loaded = true;
     }
 
-    public void onReady(Consumer<Map> callback) {
+    public void onReady(Runnable callback) {
         this.readyCallback = callback;
     }
 
@@ -279,14 +279,16 @@ public class Map {
         }
     }
 
-    public boolean isOutOfBounds(int x, int y) {
-        return x <= 0 || x >= this.width || y <= 0 || y >= this.height;
+    public boolean isOutOfBounds(Position pos) {
+        return pos.getX() <= 0 || pos.getX() >= this.width || pos.getY() <= 0 || pos.getY() >= this.height;
     }
 
-    public boolean isColliding(int x, int y) {
-        if (this.isOutOfBounds(x, y)) {
+    public boolean isColliding(Position pos) {
+        if (this.isOutOfBounds(pos)) {
             return false;
         }
+        int x = pos.getX();
+        int y = pos.getY();
         return this.grid[y][x] == 1;
     }
 
@@ -316,7 +318,7 @@ public class Map {
         });
     }
 
-    private String getGroupIdFromPosition(int x, int y) {
+    public String getGroupIdFromPosition(int x, int y) {
         int gx = (x - 1) / this.zoneWidth;
         int gy = (y - 1) / this.zoneHeight;
         return gx + "-" + gy;

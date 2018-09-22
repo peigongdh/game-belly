@@ -2,9 +2,9 @@ package com.peigongdh.gameinner.browserquest.domain.message;
 
 public class DeSpawn implements SerializeAble {
 
-    private int entityId;
+    private String entityId;
 
-    public DeSpawn(int entityId) {
+    public DeSpawn(String entityId) {
         this.entityId = entityId;
     }
 

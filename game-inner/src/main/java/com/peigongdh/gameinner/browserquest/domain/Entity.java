@@ -3,11 +3,12 @@ package com.peigongdh.gameinner.browserquest.domain;
 import com.peigongdh.gameinner.browserquest.domain.message.DeSpawn;
 import com.peigongdh.gameinner.browserquest.domain.message.Spawn;
 
+import java.util.List;
 import java.util.Random;
 
 public class Entity {
 
-    private int id;
+    private String id;
 
     private Area area;
 
@@ -21,11 +22,15 @@ public class Entity {
 
     private int y;
 
-    public int getId() {
+    private String groupId;
+
+    private List<String> recentlyLeftGroupIds;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -69,7 +74,31 @@ public class Entity {
         this.kind = kind;
     }
 
-    public Entity(int id, String type, int kind, int x, int y) {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public List<String> getRecentlyLeftGroupIds() {
+        return recentlyLeftGroupIds;
+    }
+
+    public void setRecentlyLeftGroupIds(List<String> recentlyLeftGroupIds) {
+        this.recentlyLeftGroupIds = recentlyLeftGroupIds;
+    }
+
+    public Entity(String id, String type, int kind, int x, int y) {
         this.id = id;
         this.type = type;
         this.kind = kind;
@@ -113,5 +142,8 @@ public class Entity {
             return pos;
         }
         return new Position();
+    }
+
+    public void destroy() {
     }
 }

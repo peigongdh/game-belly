@@ -2,7 +2,6 @@ package com.peigongdh.gameinner.browserquest.domain;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.function.Consumer;
 
 public class Item extends Entity {
 
@@ -14,33 +13,72 @@ public class Item extends Entity {
 
     private Timer deSpawnTimer;
 
-    private Consumer<Item> respawnCallback;
+    private Runnable respawnCallback;
 
-    public Item(int id, int kind, int x, int y) {
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    public void setStatic(boolean aStatic) {
+        isStatic = aStatic;
+    }
+
+    public boolean isFromChest() {
+        return isFromChest;
+    }
+
+    public void setFromChest(boolean fromChest) {
+        isFromChest = fromChest;
+    }
+
+    public Timer getBlinkTimer() {
+        return blinkTimer;
+    }
+
+    public void setBlinkTimer(Timer blinkTimer) {
+        this.blinkTimer = blinkTimer;
+    }
+
+    public Timer getDeSpawnTimer() {
+        return deSpawnTimer;
+    }
+
+    public void setDeSpawnTimer(Timer deSpawnTimer) {
+        this.deSpawnTimer = deSpawnTimer;
+    }
+
+    public Runnable getRespawnCallback() {
+        return respawnCallback;
+    }
+
+    public void setRespawnCallback(Runnable respawnCallback) {
+        this.respawnCallback = respawnCallback;
+    }
+
+    Item(String id, int kind, int x, int y) {
         super(id, "item", kind, x, y);
         this.isStatic = false;
         this.isFromChest = false;
     }
 
-    // FIXME:
-    public void handleDeSpawn(int beforeBlinkDelay, Consumer<Item> blinkCallback, int blinkingDuration, Consumer<Item> deSpawnCallback) {
-        Item self = this;
+    void handleDeSpawn(int beforeBlinkDelay, Runnable blinkCallback, int blinkingDuration, Runnable deSpawnCallback) {
         this.blinkTimer = new Timer();
         blinkTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                blinkCallback.accept(self);
+                blinkCallback.run();
                 deSpawnTimer = new Timer();
                 deSpawnTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        deSpawnCallback.accept(self);
+                        deSpawnCallback.run();
                     }
                 }, blinkingDuration);
             }
         }, beforeBlinkDelay);
     }
 
+    @Override
     public void destroy() {
         if (null != this.blinkTimer) {
             this.blinkTimer.cancel();
@@ -55,18 +93,16 @@ public class Item extends Entity {
         }
     }
 
-    // FIXME:
-    public void scheduleReSpawn(int delay) {
-        Item self = this;
+    private void scheduleReSpawn(int delay) {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                respawnCallback.accept(self);
+                respawnCallback.run();
             }
         }, delay);
     }
 
-    public void onReSpawn(Consumer<Item> callback) {
+    void onReSpawn(Runnable callback) {
         this.respawnCallback = callback;
     }
 
@@ -76,15 +112,11 @@ public class Item extends Entity {
      */
 
     public static void main(String[] args) {
-        new Item(1, 0, 0, 0).handleDeSpawn(
+        new Item("1", 0, 0, 0).handleDeSpawn(
                 10000,
-                item -> {
-                    System.out.println("blinkCallback: " + item.getId());
-                },
+                () -> System.out.println("blinkCallback: "),
                 4000,
-                item -> {
-                    System.out.println("deSpawnCallback: " + item.getId());
-                }
+                () -> System.out.println("deSpawnCallback: ")
         );
     }
 }

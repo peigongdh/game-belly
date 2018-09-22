@@ -29,7 +29,7 @@ public class MobArea extends Area {
         // FIXME: id is string
         int k = Types.getKindFromString(this.kind);
         Position pos = this.getRandomPositionInsideArea();
-        Mob mob = new Mob(this.getId(), k, pos.getX(), pos.getY());
+        Mob mob = new Mob("" + this.getId(), k, pos.getX(), pos.getY());
 
         // FIXME: onMove
         // mob.onMove();

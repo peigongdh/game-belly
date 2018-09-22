@@ -4,10 +4,7 @@ import com.peigongdh.gameinner.browserquest.common.Properties;
 import com.peigongdh.gameinner.browserquest.domain.message.Drop;
 import com.peigongdh.gameinner.browserquest.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Mob extends Character {
@@ -26,11 +23,83 @@ public class Mob extends Character {
 
     private Timer returnTimer;
 
-    private Consumer<Mob> reSpawnCallback;
+    private Runnable reSpawnCallback;
 
     private Consumer<Mob> moveCallback;
 
-    public Mob(int id, int kind, int x, int y) {
+    public int getSpawningX() {
+        return spawningX;
+    }
+
+    public void setSpawningX(int spawningX) {
+        this.spawningX = spawningX;
+    }
+
+    public int getSpawningY() {
+        return spawningY;
+    }
+
+    public void setSpawningY(int spawningY) {
+        this.spawningY = spawningY;
+    }
+
+    public int getArmorLevel() {
+        return armorLevel;
+    }
+
+    public void setArmorLevel(int armorLevel) {
+        this.armorLevel = armorLevel;
+    }
+
+    public int getWeaponLevel() {
+        return weaponLevel;
+    }
+
+    public void setWeaponLevel(int weaponLevel) {
+        this.weaponLevel = weaponLevel;
+    }
+
+    public List<Hate> getHateList() {
+        return hateList;
+    }
+
+    public void setHateList(List<Hate> hateList) {
+        this.hateList = hateList;
+    }
+
+    public Timer getReSpawnTimer() {
+        return reSpawnTimer;
+    }
+
+    public void setReSpawnTimer(Timer reSpawnTimer) {
+        this.reSpawnTimer = reSpawnTimer;
+    }
+
+    public Timer getReturnTimer() {
+        return returnTimer;
+    }
+
+    public void setReturnTimer(Timer returnTimer) {
+        this.returnTimer = returnTimer;
+    }
+
+    public Runnable getReSpawnCallback() {
+        return reSpawnCallback;
+    }
+
+    public void setReSpawnCallback(Runnable reSpawnCallback) {
+        this.reSpawnCallback = reSpawnCallback;
+    }
+
+    public Consumer<Mob> getMoveCallback() {
+        return moveCallback;
+    }
+
+    public void setMoveCallback(Consumer<Mob> moveCallback) {
+        this.moveCallback = moveCallback;
+    }
+
+    public Mob(String id, int kind, int x, int y) {
         super(id, "mob", kind, x, y);
         this.spawningX = x;
         this.spawningY = y;
@@ -42,6 +111,7 @@ public class Mob extends Character {
         this.setDead(false);
     }
 
+    @Override
     public void destroy() {
         this.setDead(true);
         this.hateList.clear();
@@ -55,15 +125,15 @@ public class Mob extends Character {
         this.setHitPoints(this.getHitPoints() - points);
     }
 
-    private boolean hates(int playerId) {
-        return Util.any(this.hateList, hate -> hate.getId() == playerId);
+    private boolean hates(String playerId) {
+        return Util.any(this.hateList, hate -> hate.getId().equals(playerId));
         // or use stream anyMatch
         // return this.hateList.stream().anyMatch(hate -> hate.getId() == playerId);
     }
 
-    public void increaseHateFor(int playerId, int points) {
+    void increaseHateFor(String playerId, int points) {
         if (this.hates(playerId)) {
-            Hate h = Util.detect(this.hateList, hate -> hate.getId() == playerId);
+            Hate h = Util.detect(this.hateList, hate -> hate.getId().equals(playerId));
             if (null != h) {
                 h.setHate(h.getHate() + points);
             }
@@ -72,13 +142,32 @@ public class Mob extends Character {
         }
     }
 
-    public void forgetPlayer(int playerId, int duration) {
-        this.hateList = Util.reject(this.hateList, hate -> hate.getId() == playerId);
+    String getHatedPlayerId(int hateRank) {
+        String playerId;
+        int i;
+        int size = this.hateList.size();
+        if (hateRank > 0 && hateRank <= size) {
+            i = size - hateRank;
+        } else {
+            i = size - 1;
+        }
+        this.hateList.sort(Comparator.comparing(Hate::getHate));
+        playerId = this.hateList.get(i).getId();
+        return playerId;
+    }
+
+    public void forgetPlayer(String playerId, int duration) {
+        this.hateList = Util.reject(this.hateList, hate -> hate.getId().equals(playerId));
         // or use stream filter
         // this.hateList = this.hateList.stream().filter(hate -> hate.getId() != playerId).collect(Collectors.toList());
         if (this.hateList.isEmpty()) {
             this.returnToSpawningPosition(duration);
         }
+    }
+
+    void forgetEveryone() {
+        this.hateList.clear();
+        this.returnToSpawningPosition(1);
     }
 
     public Drop drop(Item item) {
@@ -110,11 +199,11 @@ public class Mob extends Character {
 
     private void reSpawnCallback() {
         if (null != this.reSpawnCallback) {
-            this.reSpawnCallback.accept(this);
+            this.reSpawnCallback.run();
         }
     }
 
-    public void onReSpawn(Consumer<Mob> callback) {
+    void onReSpawn(Runnable callback) {
         this.reSpawnCallback = callback;
     }
 
@@ -139,11 +228,11 @@ public class Mob extends Character {
         this.move(this.getX(), this.getY());
     }
 
-    public void onMove(Consumer<Mob> callback) {
+    void onMove(Consumer<Mob> callback) {
         this.moveCallback = callback;
     }
 
-    public void move(int x, int y) {
+    void move(int x, int y) {
         this.setPosition(x, y);
         if (null != this.moveCallback) {
             moveCallback.accept(this);
@@ -154,7 +243,7 @@ public class Mob extends Character {
         this.resetHitPoints(Properties.getHitPoints(this.getKind()));
     }
 
-    public int distanceToSpawningPoint(int x, int y) {
+    int distanceToSpawningPoint(int x, int y) {
         return Util.distanceTo(x, y, this.spawningX, this.spawningY);
     }
 

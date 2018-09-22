@@ -1,22 +1,24 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
+import com.peigongdh.gameinner.browserquest.common.Constant;
+
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Chest extends Item {
 
-    private ConcurrentHashMap<Integer, Item> items;
+    private List<Integer> items;
 
-    public Chest(int id, int kind, int x, int y) {
-        super(id, kind, x, y);
+    public Chest(String id, int x, int y) {
+        super(id, Constant.TYPES_ENTITIES_CHEST, x, y);
     }
 
-    public void setItems(ConcurrentHashMap<Integer, Item> items) {
+    public void setItems(List<Integer> items) {
         this.items = items;
     }
 
-    public Item getRandomItem() {
-        Item item = null;
+    public int getRandomItem() {
+        int item = 0;
         int size = this.items.size();
         if (size > 0) {
             int index = new Random().nextInt(size);

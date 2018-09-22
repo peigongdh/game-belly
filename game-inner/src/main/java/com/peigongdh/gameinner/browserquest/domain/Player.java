@@ -1,5 +1,9 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
+import com.peigongdh.gameinner.browserquest.domain.message.DeSpawn;
+import com.peigongdh.gameinner.browserquest.domain.message.SerializeAble;
+import javafx.util.Pair;
+
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -22,7 +26,11 @@ public class Player extends Character {
 
     private int weaponLevel;
 
+    private String name;
+
     private Supplier<Position> requestPositionCallback;
+
+    private Consumer<Pair<SerializeAble, Boolean>> broadcastCallback;
 
     public boolean isHasEnteredGame() {
         return hasEnteredGame;
@@ -88,11 +96,56 @@ public class Player extends Character {
         this.weaponLevel = weaponLevel;
     }
 
-    public Player(int id, String type, int kind, int x, int y) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Player(String id, String type, int kind, int x, int y) {
         super(id, type, kind, x, y);
     }
 
-    public void onRequestPosition(Supplier<Position> callback) {
+    void onRequestPosition(Supplier<Position> callback) {
         this.requestPositionCallback = callback;
+    }
+
+    void removeHater(Mob mob) {
+        // TODO
+    }
+
+    void onMove(Consumer<Position> callback) {
+        // TODO
+    }
+
+    void onLootMove(Consumer<Position> callback) {
+        // TODO
+    }
+
+    void onZone(Runnable callback) {
+        // TODO
+    }
+
+    void onBroadcast(Consumer<Pair<SerializeAble, Boolean>> callback) {
+        // TODO
+    }
+
+    void onBroadcastToZone(Consumer<Pair<SerializeAble, Boolean>> callback) {
+        // TODO
+    }
+
+    void onExit(Runnable callback) {
+        // TODO
+    }
+
+    public void broadcast(SerializeAble message, boolean ignoreSelf) {
+        if (null != this.broadcastCallback) {
+            this.broadcastCallback.accept(new Pair<>(message, ignoreSelf));
+        }
+    }
+
+    public void addHater(Mob mob) {
     }
 }

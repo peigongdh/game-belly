@@ -2,11 +2,11 @@ package com.peigongdh.gameinner.browserquest.domain.message;
 
 public class Attack implements SerializeAble {
 
-    private int attackerId;
+    private String attackerId;
 
-    private int targetId;
+    private String targetId;
 
-    public Attack(int attackerId, int targetId) {
+    public Attack(String attackerId, String targetId) {
         this.attackerId = attackerId;
         this.targetId = targetId;
     }

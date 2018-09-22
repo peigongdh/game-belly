@@ -10,6 +10,30 @@ public class ChestArea extends Area {
 
     private int chestY;
 
+    public List<Integer> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Integer> items) {
+        this.items = items;
+    }
+
+    public int getChestX() {
+        return chestX;
+    }
+
+    public void setChestX(int chestX) {
+        this.chestX = chestX;
+    }
+
+    public int getChestY() {
+        return chestY;
+    }
+
+    public void setChestY(int chestY) {
+        this.chestY = chestY;
+    }
+
     public ChestArea(int id, int x, int y, int width, int height, World world, List<Integer> items, int chestX, int chestY) {
         super(id, x, y, width, height, world);
         this.items = items;

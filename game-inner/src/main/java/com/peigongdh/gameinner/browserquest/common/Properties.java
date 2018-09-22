@@ -1,11 +1,15 @@
 package com.peigongdh.gameinner.browserquest.common;
 
+import com.peigongdh.gameinner.browserquest.domain.Item;
+import com.peigongdh.gameinner.browserquest.domain.message.Drop;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Properties {
 
-    private static final Map<String, MobConfig> properties;
+    public static final Map<String, MobConfig> properties;
 
     static {
         properties = new HashMap<>();
@@ -112,6 +116,21 @@ public class Properties {
 
     public static int getHitPoints(int kind) {
         return Properties.properties.get(Types.getKindAsString(kind)).getHp();
+    }
+
+    public static String getRandomDropItemName(String kind) {
+        MobConfig config = Properties.properties.get(kind);
+        int v = new Random().nextInt(101);
+        int p = 0;
+        for (Map.Entry<String, Integer> entry : config.getDrops().entrySet()) {
+            String itemName = entry.getKey();
+            int percentage = entry.getValue();
+            p += percentage;
+            if (v <= p) {
+                return itemName;
+            }
+        }
+        return null;
     }
 }
 

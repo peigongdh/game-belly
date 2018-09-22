@@ -3,7 +3,6 @@ package com.peigongdh.gameinner.browserquest.domain;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 public class Area {
     private int id;
@@ -18,13 +17,13 @@ public class Area {
 
     private World world;
 
-    private ConcurrentHashMap<Integer, Entity> entities;
+    private ConcurrentHashMap<String, Entity> entities;
 
     private boolean hasCompletelyReSpawned;
 
     private int nbEntities;
 
-    private Consumer<Area> emptyCallback;
+    private Runnable emptyCallback;
 
     public int getId() {
         return id;
@@ -74,15 +73,15 @@ public class Area {
         this.world = world;
     }
 
-    public ConcurrentHashMap<Integer, Entity> getEntities() {
+    public ConcurrentHashMap<String, Entity> getEntities() {
         return entities;
     }
 
-    public void setEntities(ConcurrentHashMap<Integer, Entity> entities) {
+    public void setEntities(ConcurrentHashMap<String, Entity> entities) {
         this.entities = entities;
     }
 
-    public Area(int id, int x, int y, int width, int height, World world) {
+    Area(int id, int x, int y, int width, int height, World world) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -96,7 +95,7 @@ public class Area {
         this.nbEntities = 2;
     }
 
-    public Position getRandomPositionInsideArea() {
+    Position getRandomPositionInsideArea() {
         Position pos = new Position();
         boolean valid = false;
         while (!valid) {
@@ -108,20 +107,19 @@ public class Area {
         return pos;
     }
 
-    public void removeFromArea(Entity entity) {
+    void removeFromArea(Entity entity) {
         entities.remove(entity.getId());
-        // TODO: onEmpty
         if (this.isEmpty() && this.hasCompletelyReSpawned && null != this.emptyCallback) {
-            this.emptyCallback.accept(this);
+            this.emptyCallback.run();
         }
     }
 
-    public void addToArea(Entity entity) {
+    void addToArea(Entity entity) {
         if (null != entity) {
             this.entities.put(entity.getId(), entity);
             entity.setArea(this);
             if (entity instanceof Mob) {
-                this.world.addMob(entity);
+                this.world.addMob((Mob) entity);
             }
         }
         if (this.isFull()) {
@@ -129,12 +127,12 @@ public class Area {
         }
     }
 
-    public boolean isFull() {
+    private boolean isFull() {
         return !this.isEmpty() && this.nbEntities == this.entities.size();
     }
 
-    public boolean isEmpty() {
-        for (Map.Entry<Integer, Entity> entry : this.entities.entrySet()) {
+    private boolean isEmpty() {
+        for (Map.Entry<String, Entity> entry : this.entities.entrySet()) {
             Entity entity = entry.getValue();
             if (!entity.isDead()) {
                 return false;
@@ -143,11 +141,11 @@ public class Area {
         return true;
     }
 
-    public void onEmpty(Consumer<Area> callback) {
+    void onEmpty(Runnable callback) {
         this.emptyCallback = callback;
     }
 
-    public void setNumberOfEntities(int nb) {
+    void setNumberOfEntities(int nb) {
         this.nbEntities = nb;
     }
 }
