@@ -1,17 +1,24 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.peigongdh.gameinner.browserquest.domain.Mob;
+import com.alibaba.fastjson.JSON;
+import com.peigongdh.gameinner.browserquest.common.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Kill implements SerializeAble {
 
-    private Mob mob;
+    private int mobKind;
 
-    public Kill(Mob mob) {
-        this.mob = mob;
+    public Kill(int mobKind) {
+        this.mobKind = mobKind;
     }
 
     @Override
     public String serialize() {
-        return null;
+        List<Object> list = new ArrayList<>();
+        list.add(Constant.TYPES_MESSAGES_KILL);
+        list.add(this.mobKind);
+        return JSON.toJSONString(list);
     }
 }

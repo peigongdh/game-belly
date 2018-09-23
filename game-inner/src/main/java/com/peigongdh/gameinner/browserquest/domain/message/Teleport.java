@@ -1,5 +1,11 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
+import com.alibaba.fastjson.JSON;
+import com.peigongdh.gameinner.browserquest.common.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Teleport implements SerializeAble {
 
     private String id;
@@ -16,6 +22,11 @@ public class Teleport implements SerializeAble {
 
     @Override
     public String serialize() {
-        return null;
+        List<Object> list = new ArrayList<>();
+        list.add(Constant.TYPES_MESSAGES_TELEPORT);
+        list.add(this.id);
+        list.add(this.x);
+        list.add(this.y);
+        return JSON.toJSONString(list);
     }
 }

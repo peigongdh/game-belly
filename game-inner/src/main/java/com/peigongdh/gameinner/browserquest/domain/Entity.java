@@ -107,8 +107,9 @@ public class Entity {
     }
 
 
-    public void getState() {
+    public List<Object> getState() {
         // TODO
+        return null;
     }
 
     public Spawn spawn() {

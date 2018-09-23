@@ -1,5 +1,11 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
+import com.alibaba.fastjson.JSON;
+import com.peigongdh.gameinner.browserquest.common.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Welcome implements SerializeAble {
 
     private String id;
@@ -22,6 +28,13 @@ public class Welcome implements SerializeAble {
 
     @Override
     public String serialize() {
-        return null;
+        List<Object> list = new ArrayList<>();
+        list.add(Constant.TYPES_MESSAGES_WELCOME);
+        list.add(this.id);
+        list.add(this.name);
+        list.add(this.x);
+        list.add(this.y);
+        list.add(this.hitPoints);
+        return JSON.toJSONString(list);
     }
 }

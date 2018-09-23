@@ -1,20 +1,28 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.peigongdh.gameinner.browserquest.domain.Entity;
+import com.alibaba.fastjson.JSON;
+import com.peigongdh.gameinner.browserquest.common.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Damage implements SerializeAble {
 
-    private Entity entity;
+    private String entityId;
 
-    private int damage;
+    private int points;
 
-    public Damage(Entity entity, int damage) {
-        this.entity = entity;
-        this.damage = damage;
+    public Damage(String entityId, int points) {
+        this.entityId = entityId;
+        this.points = points;
     }
 
     @Override
     public String serialize() {
-        return null;
+        List<Object> list = new ArrayList<>();
+        list.add(Constant.TYPES_MESSAGES_DAMAGE);
+        list.add(this.entityId);
+        list.add(this.points);
+        return JSON.toJSONString(list);
     }
 }

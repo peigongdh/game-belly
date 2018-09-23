@@ -378,8 +378,10 @@ public class Player extends Character {
         this.hater.clear();
     }
 
-    public void getState() {
+    @overwrite
+    public List<Object> getState() {
         // TODO
+        return null;
     }
 
     public void send(String message) {

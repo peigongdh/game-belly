@@ -134,7 +134,7 @@ public class World {
             player.onZone(() -> {
                 boolean hashChangedGroups = self.handleEntityGroupMembership(player);
                 if (hashChangedGroups) {
-                    self.pushToPreviousGroups(player, new Destroy(player));
+                    self.pushToPreviousGroups(player, new Destroy(player.getId()));
                     self.pushRelevantEntityListTo(player);
                 }
             });
@@ -585,10 +585,10 @@ public class World {
         World self = this;
         if (null != item) {
             item.handleDeSpawn(10000,
-                    () -> self.pushToAdjacentGroups(item.getGroupId(), new Blink(item), ""),
+                    () -> self.pushToAdjacentGroups(item.getGroupId(), new Blink(item.getId()), ""),
                     4000,
                     () -> {
-                        self.pushToAdjacentGroups(item.getGroupId(), new Destroy(item), "");
+                        self.pushToAdjacentGroups(item.getGroupId(), new Destroy(item.getId()), "");
                         self.removeEntity(item);
                     });
         }
@@ -686,7 +686,7 @@ public class World {
         if (character.getType().equals("mob")) {
             // Let the mob's attacker (player) know how much damage was inflicted
             Player player = (Player) attacker;
-            this.pushToPlayer(player, new Damage(character, damage));
+            this.pushToPlayer(player, new Damage(character.getId(), damage));
         }
 
         // If the entity is about to die
@@ -696,7 +696,7 @@ public class World {
                 Item item = this.getDroppedItem(mob);
 
                 Player player = (Player) attacker;
-                this.pushToPlayer(player, new Kill(mob));
+                this.pushToPlayer(player, new Kill(mob.getKind()));
                 // DeSpawn must be enqueued before the item drop
                 this.pushToAdjacentGroups(mob.getGroupId(), mob.deSpawn(), null);
                 if (null != item) {
