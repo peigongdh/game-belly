@@ -2,16 +2,10 @@ package com.peigongdh.gameinner.handler;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.peigongdh.gameinner.map.GateConnectionMap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 
 public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 

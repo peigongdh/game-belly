@@ -147,9 +147,8 @@ public class Player extends Character {
         this.name = name;
     }
 
-    public Player(ChannelHandlerContext ctx, World world) {
-        // FIXME: id
-        super("0", "player", Constant.TYPES_ENTITIES_WARRIOR, 0, 0);
+    public Player(String id, ChannelHandlerContext ctx, World world) {
+        super(id, "player", Constant.TYPES_ENTITIES_WARRIOR, 0, 0);
         this.ctx = ctx;
         this.world = world;
 
@@ -491,14 +490,6 @@ public class Player extends Character {
 
     void onZone(Runnable callback) {
         this.zoneCallback = callback;
-    }
-
-    void onOrient() {
-        // TODO
-    }
-
-    void onMessage() {
-        // TODO
     }
 
     void onBroadcast(Consumer<Pair<SerializeAble, Boolean>> callback) {

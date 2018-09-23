@@ -27,13 +27,14 @@ public class GateConnectionMap {
         return null;
     }
 
-    public static void addGateConnection(ChannelHandlerContext ctx) {
+    public static GateConnection addGateConnection(ChannelHandlerContext ctx) {
         // FIXME: add again should remove one of before
         GateConnection conn = new GateConnection(ctx);
 
         if (gateConnectionMap.putIfAbsent(conn.getGateId(), conn) != null) {
             logger.error("duplicated gateId");
         }
+        return conn;
     }
 
     public static void removeGateConnection(ChannelHandlerContext ctx) {

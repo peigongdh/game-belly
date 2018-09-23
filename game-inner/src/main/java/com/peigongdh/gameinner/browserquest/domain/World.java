@@ -5,9 +5,13 @@ import com.peigongdh.gameinner.browserquest.common.Properties;
 import com.peigongdh.gameinner.browserquest.common.Types;
 import com.peigongdh.gameinner.browserquest.domain.message.*;
 import com.peigongdh.gameinner.browserquest.util.Util;
+import com.peigongdh.gameinner.map.GateConnection;
+import com.peigongdh.gameinner.map.GateConnectionMap;
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -33,12 +37,10 @@ public class World {
 
     private ConcurrentHashMap<String, Mob> mobs;
 
+    // FIXME: remove?
     private ConcurrentHashMap<String, Entity> attackers;
 
     private ConcurrentHashMap<String, Item> items;
-
-    // FIXME: ?
-    // equipping, hurt
 
     private ConcurrentHashMap<String, Npc> npcs;
 
@@ -74,6 +76,10 @@ public class World {
 
     public Map getMap() {
         return map;
+    }
+
+    public Consumer<Player> getConnectCallback() {
+        return connectCallback;
     }
 
     public World(int id, int maxPlayer) {
@@ -565,7 +571,10 @@ public class World {
         for (java.util.Map.Entry<String, List<String>> entry : this.outgoingQueues.entrySet()) {
             String id = entry.getKey();
             if (null != this.outgoingQueues.get(id)) {
-                // TODO: send message
+                GateConnection conn = GateConnectionMap.getGateConnection(Long.parseLong(id));
+                assert conn != null;
+                conn.getCtx().writeAndFlush(this.outgoingQueues.get(id));
+                this.outgoingQueues.get(id).clear();
             }
         }
     }
@@ -765,5 +774,18 @@ public class World {
         Item item = this.createItem(kind, x, y);
         item.setFromChest(true);
         return this.addItem(item);
+    }
+
+    public void updatePopulation(int totalPlayers) {
+        this.pushBroadcast(new Population(this.playerCount, totalPlayers != 0 ? totalPlayers : this.playerCount), null);
+    }
+
+    private void pushBroadcast(SerializeAble message, String ignoredPlayerId) {
+        for (java.util.Map.Entry<String, List<String>> entry : this.outgoingQueues.entrySet()) {
+            String id = entry.getKey();
+            if (!id.equals(ignoredPlayerId)) {
+                this.outgoingQueues.get(id).add(message.serialize());
+            }
+        }
     }
 }

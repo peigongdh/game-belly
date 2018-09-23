@@ -1,5 +1,6 @@
 package com.peigongdh.gameinner.server;
 
+import com.peigongdh.gameinner.browserquest.domain.World;
 import com.peigongdh.gameinner.handler.InnerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -50,7 +51,7 @@ public class InnerServer {
         return initSuccess;
     }
 
-    public void start() {
+    public void start(World world) {
         boolean initResult = init();
         if (!initResult) {
             logger.info("inner server init error");
@@ -61,7 +62,7 @@ public class InnerServer {
             serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(masterGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new InnerChannelInitializer())
+                    .childHandler(new InnerChannelInitializer(world))
                     .option(ChannelOption.SO_BACKLOG, backlog)
                     .childOption(ChannelOption.SO_KEEPALIVE, keepAlive)
                     .childOption(ChannelOption.TCP_NODELAY, true);

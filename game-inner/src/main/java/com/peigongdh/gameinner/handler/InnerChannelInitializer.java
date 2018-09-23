@@ -1,5 +1,6 @@
 package com.peigongdh.gameinner.handler;
 
+import com.peigongdh.gameinner.browserquest.domain.World;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -20,6 +21,12 @@ public class InnerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final StringEncoder STRING_ENCODER = new StringEncoder(CharsetUtil.UTF_8);
 
+    private World world;
+
+    public InnerChannelInitializer(World world) {
+        this.world = world;
+    }
+
     protected void initChannel(SocketChannel ch) {
         ChannelPipeline pipeline = ch.pipeline();
         // LengthFieldBasedFrameDecoder extends ByteToMessageDecoder
@@ -32,6 +39,6 @@ public class InnerChannelInitializer extends ChannelInitializer<SocketChannel> {
         // the encoder and decoder are static as these are sharable
         pipeline.addLast(STRING_DECODER);
         pipeline.addLast(STRING_ENCODER);
-        pipeline.addLast(new InnerHandler());
+        pipeline.addLast(new InnerHandler(world));
     }
 }
