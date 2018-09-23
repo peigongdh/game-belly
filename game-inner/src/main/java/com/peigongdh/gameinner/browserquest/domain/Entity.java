@@ -8,23 +8,23 @@ import java.util.Random;
 
 public class Entity {
 
-    private String id;
+    protected String id;
 
-    private Area area;
+    protected Area area;
 
-    private boolean dead;
+    protected boolean dead;
 
-    private String type;
+    protected String type;
 
-    private int kind;
+    protected int kind;
 
-    private int x;
+    protected int x;
 
-    private int y;
+    protected int y;
 
-    private String groupId;
+    protected String groupId;
 
-    private List<String> recentlyLeftGroupIds;
+    protected List<String> recentlyLeftGroupIds;
 
     public String getId() {
         return id;
@@ -106,20 +106,30 @@ public class Entity {
         this.y = y;
     }
 
+
+    public void getState() {
+        // TODO
+    }
+
     public Spawn spawn() {
         return new Spawn(this);
     }
 
-    public DeSpawn deSpawn() {
+    DeSpawn deSpawn() {
         return new DeSpawn(this.id);
     }
 
-    public void setPosition(int x, int y) {
+    void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Position getPositionNextTo(Entity entity) {
+    void setPosition(Position pos) {
+        this.x = pos.getY();
+        this.y = pos.getY();
+    }
+
+    Position getPositionNextTo(Entity entity) {
         if (null != entity) {
             // This is a quick & dirty way to give mobs a random position
             // close to another entity.

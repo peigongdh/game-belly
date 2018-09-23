@@ -121,7 +121,7 @@ public class Mob extends Character {
         this.handleReSpawn();
     }
 
-    public void receiveDamage(int points) {
+    public void receiveDamage(int points, String playerId) {
         this.setHitPoints(this.getHitPoints() - points);
     }
 

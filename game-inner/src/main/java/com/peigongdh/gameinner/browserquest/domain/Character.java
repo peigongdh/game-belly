@@ -10,15 +10,15 @@ import java.util.function.Consumer;
 
 public class Character extends Entity {
 
-    private int orientation;
+    protected int orientation;
 
-    private int maxHitPoints;
+    protected int maxHitPoints;
 
-    private int hitPoints;
+    protected int hitPoints;
 
-    private String targetId;
+    protected String targetId;
 
-    private ConcurrentHashMap<String, Entity> attackers;
+    protected ConcurrentHashMap<String, Entity> attackers;
 
     public int getHitPoints() {
         return hitPoints;
@@ -75,6 +75,10 @@ public class Character extends Entity {
         this.hitPoints = 10;
         this.targetId = null;
         this.attackers = new ConcurrentHashMap<>();
+    }
+
+    public void getState() {
+        // TODO
     }
 
     public void resetHitPoints(int maxHitPoints) {

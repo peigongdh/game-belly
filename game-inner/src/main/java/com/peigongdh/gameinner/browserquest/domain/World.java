@@ -68,6 +68,14 @@ public class World {
 
     private Consumer<Entity> attackCallback;
 
+    public Consumer<Player> getEnterCallback() {
+        return enterCallback;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
     public World(int id, int maxPlayer) {
         this.id = id;
         this.maxPlayer = maxPlayer;
@@ -209,7 +217,7 @@ public class World {
         this.outgoingQueues.remove(player.getId());
     }
 
-    private void pushRelevantEntityListTo(Player player) {
+    void pushRelevantEntityListTo(Player player) {
         if (null != player && null != this.groups.get(player.getGroupId())) {
             ConcurrentHashMap<String, Entity> entities = this.groups.get(player.getGroupId()).getEntities();
             List<String> entityIds = new ArrayList<>(entities.keySet());
@@ -231,7 +239,7 @@ public class World {
 
     private void moveEntity(Entity entity, Position pos) {
         if (null != entity) {
-            entity.setPosition(pos.getX(), pos.getY());
+            entity.setPosition(pos);
             this.handleEntityGroupMembership(entity);
         }
     }
@@ -509,7 +517,7 @@ public class World {
         }
     }
 
-    private void pushToPlayer(Player player, SerializeAble message) {
+    void pushToPlayer(Player player, SerializeAble message) {
         if (null != player && null != this.outgoingQueues.get(player.getId())) {
             this.outgoingQueues.get(player.getId()).add(message.serialize());
         } else {
@@ -517,7 +525,7 @@ public class World {
         }
     }
 
-    private Entity getEntityById(String id) {
+    Entity getEntityById(String id) {
         Entity entity = this.entities.get(id);
         if (null != entity) {
             return entity;
@@ -586,7 +594,7 @@ public class World {
         }
     }
 
-    private void removeEntity(Entity entity) {
+    void removeEntity(Entity entity) {
         this.entities.remove(entity.getId());
         this.mobs.remove(entity.getId());
         this.items.remove(entity.getId());
@@ -660,7 +668,7 @@ public class World {
         }
     }
 
-    private void broadcastAttacker(Character character) {
+    void broadcastAttacker(Character character) {
         if (null != character) {
             this.pushToAdjacentGroups(character.getGroupId(), character.attack(), character.getId());
         }
@@ -704,7 +712,7 @@ public class World {
         }
     }
 
-    private void handlePlayerVanish(Player player) {
+    void handlePlayerVanish(Player player) {
         List<Mob> previousAttackers = new ArrayList<>();
         World self = this;
         // When a player dies or teleports, all of his attackers go and attack their second most hated $player->
@@ -724,5 +732,38 @@ public class World {
         String kind = Types.getKindAsString(mob.getKind());
         String itemName = Properties.getRandomDropItemName(kind);
         return this.addItem(this.createItem(Types.getKindFromString(itemName), mob.getX(), mob.getY()));
+    }
+
+    void pushSpawnsToPlayer(Player player, List<String> ids) {
+        for (String id : ids) {
+            Entity entity = this.getEntityById(id);
+            if (null != entity) {
+                this.pushToPlayer(player, new Spawn(entity));
+            } else {
+                logger.error("bad id:{} ids", ids);
+            }
+        }
+    }
+
+    void addPlayer(Player player) {
+        this.addEntity(player);
+        this.players.put(player.getId(), player);
+        this.outgoingQueues.put(player.getId(), new ArrayList<>());
+    }
+
+    void handleOpenedChest(Chest chest, Player player) {
+        this.pushToAdjacentGroups(chest.getGroupId(), chest.deSpawn(), null);
+        this.removeEntity(chest);
+        int kind = chest.getRandomItem();
+        if (kind > 0) {
+            Item item = this.addItemFromChest(kind, chest.getX(), chest.getY());
+            this.handleItemDeSpawn(item);
+        }
+    }
+
+    private Item addItemFromChest(int kind, int x, int y) {
+        Item item = this.createItem(kind, x, y);
+        item.setFromChest(true);
+        return this.addItem(item);
     }
 }

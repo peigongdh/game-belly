@@ -1,13 +1,13 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.peigongdh.gameinner.browserquest.domain.Mob;
+import com.peigongdh.gameinner.browserquest.domain.Entity;
 
 public class Move implements SerializeAble {
 
-    private Mob mob;
+    private Entity entity;
 
-    public Move(Mob mob) {
-        this.mob = mob;
+    public Move(Entity entity) {
+        this.entity = entity;
     }
 
     @Override
