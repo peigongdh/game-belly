@@ -17,6 +17,8 @@ public class MobArea extends Area {
         super(id, x, y, width, height, world);
         this.nb = nb;
         this.kind = kind;
+        this.setNumberOfEntities(nb);
+        // this.initRoaming();
     }
 
     public void spawnMob() {
@@ -30,9 +32,7 @@ public class MobArea extends Area {
         int k = Types.getKindFromString(this.kind);
         Position pos = this.getRandomPositionInsideArea();
         Mob mob = new Mob("" + this.getId(), k, pos.getX(), pos.getY());
-
-        // FIXME: onMove
-        // mob.onMove();
+        mob.onMove(mob1 -> this.world.onMobMoveCallback(mob1));
         return mob;
     }
 

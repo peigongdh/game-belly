@@ -5,7 +5,6 @@ import com.peigongdh.gameinner.browserquest.common.Constant;
 import com.peigongdh.gameinner.browserquest.domain.Hate;
 import com.peigongdh.gameinner.browserquest.domain.Item;
 import com.peigongdh.gameinner.browserquest.domain.Mob;
-import com.peigongdh.gameinner.browserquest.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;

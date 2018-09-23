@@ -1,8 +1,5 @@
 package com.peigongdh.gameinner.browserquest.common;
 
-import com.peigongdh.gameinner.browserquest.domain.Item;
-import com.peigongdh.gameinner.browserquest.domain.message.Drop;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -155,7 +152,7 @@ class MobConfig {
         return weapon;
     }
 
-    public Map<String, Integer> getDrops() {
+    Map<String, Integer> getDrops() {
         return drops;
     }
 

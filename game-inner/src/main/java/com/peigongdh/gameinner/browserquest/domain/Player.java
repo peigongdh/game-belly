@@ -157,7 +157,6 @@ public class Player extends Character {
         this.setDead(false);
         this.hater = new ConcurrentHashMap<>();
         this.lastCheckpoint = null;
-        // FormatChecker ?
         this.disconnectTimer = null;
     }
 

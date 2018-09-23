@@ -5,25 +5,25 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Area {
-    private int id;
+    protected int id;
 
-    private int x;
+    protected int x;
 
-    private int y;
+    protected int y;
 
-    private int width;
+    protected int width;
 
-    private int height;
+    protected int height;
 
-    private World world;
+    protected World world;
 
-    private ConcurrentHashMap<String, Entity> entities;
+    protected ConcurrentHashMap<String, Entity> entities;
 
-    private boolean hasCompletelyReSpawned;
+    protected boolean hasCompletelyReSpawned;
 
-    private int nbEntities;
+    protected int nbEntities;
 
-    private Runnable emptyCallback;
+    protected Runnable emptyCallback;
 
     public int getId() {
         return id;
@@ -91,7 +91,6 @@ public class Area {
         this.entities = new ConcurrentHashMap<>();
         // FIXME: true or false?
         this.hasCompletelyReSpawned = true;
-        // FIXME: 2?
         this.nbEntities = 2;
     }
 
