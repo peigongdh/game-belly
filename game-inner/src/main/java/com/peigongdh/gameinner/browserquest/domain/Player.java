@@ -378,10 +378,17 @@ public class Player extends Character {
         this.hater.clear();
     }
 
-    @overwrite
+    @Override
     public List<Object> getState() {
-        // TODO
-        return null;
+        List<Object> list = new ArrayList<>(this.getBaseState());
+        list.add(this.name);
+        list.add(this.orientation);
+        list.add(this.armor);
+        list.add(this.weapon);
+        if (null != this.targetId) {
+            list.add(targetId);
+        }
+        return list;
     }
 
     public void send(String message) {

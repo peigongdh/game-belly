@@ -4,6 +4,7 @@ import com.peigongdh.gameinner.browserquest.domain.message.Attack;
 import com.peigongdh.gameinner.browserquest.domain.message.Health;
 import com.peigongdh.gameinner.browserquest.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,9 +79,14 @@ public class Character extends Entity {
         this.attackers = new ConcurrentHashMap<>();
     }
 
+    @Override
     public List<Object> getState() {
-        // TODO
-        return null;
+        List<Object> list = new ArrayList<>(this.getBaseState());
+        list.add(this.orientation);
+        if (null != this.targetId) {
+            list.add(targetId);
+        }
+        return list;
     }
 
     public void resetHitPoints(int maxHitPoints) {

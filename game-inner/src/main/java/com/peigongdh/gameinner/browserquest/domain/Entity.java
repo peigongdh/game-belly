@@ -3,6 +3,7 @@ package com.peigongdh.gameinner.browserquest.domain;
 import com.peigongdh.gameinner.browserquest.domain.message.DeSpawn;
 import com.peigongdh.gameinner.browserquest.domain.message.Spawn;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -106,10 +107,17 @@ public class Entity {
         this.y = y;
     }
 
+    List<Object> getBaseState() {
+        List<Object> list = new ArrayList<>();
+        list.add(this.id);
+        list.add(this.kind);
+        list.add(this.x);
+        list.add(this.y);
+        return list;
+    }
 
     public List<Object> getState() {
-        // TODO
-        return null;
+        return this.getBaseState();
     }
 
     public Spawn spawn() {
