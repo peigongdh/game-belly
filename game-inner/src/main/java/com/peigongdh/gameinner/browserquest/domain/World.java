@@ -7,11 +7,9 @@ import com.peigongdh.gameinner.browserquest.domain.message.*;
 import com.peigongdh.gameinner.browserquest.util.Util;
 import com.peigongdh.gameinner.map.GateConnection;
 import com.peigongdh.gameinner.map.GateConnectionMap;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;

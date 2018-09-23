@@ -228,11 +228,11 @@ public class Map {
         this.initConnectedGroup(doors);
         this.initCheckpoints(checkpoints);
 
+        this.loaded = true;
+
         if (null != this.readyCallback) {
             readyCallback.run();
         }
-
-        this.loaded = true;
     }
 
     public void onReady(Runnable callback) {
@@ -366,7 +366,7 @@ public class Map {
             });
         }
 
-        return Util.reject(groupPositionList, position -> position.getX() < 0 || position.getY() < 0 || pos.getX() >= groupWidth || position.getY() >= groupHeight);
+        return Util.reject(groupPositionList, position -> position.getX() < 0 || position.getY() < 0 || position.getX() >= groupWidth || position.getY() >= groupHeight);
     }
 
     public void forEachAdjacentGroup(String groupId, Consumer<String> callback) {

@@ -291,7 +291,7 @@ public class Types {
 
     // eg: Constant.TYPES_ENTITIES_WARRIOR -> "player"
     public static String getKindAsString(Integer kind) {
-        return Types.kindsToTypesMap.get(kind);
+        return Types.kindsToStringMap.get(kind);
     }
 
     public static void forEachKind(Consumer<Pair<Integer, String>> callback) {

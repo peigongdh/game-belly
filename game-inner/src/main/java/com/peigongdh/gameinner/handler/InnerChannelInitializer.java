@@ -15,7 +15,8 @@ import io.netty.util.CharsetUtil;
 
 public class InnerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static final LengthFieldPrepender LENGTH_FIELD_PREPENDER = new LengthFieldPrepender(Integer.BYTES);
+    // FIXME: now test for workerman frame protocol
+    private static final LengthFieldPrepender LENGTH_FIELD_PREPENDER = new LengthFieldPrepender(Integer.BYTES, true);
 
     private static final StringDecoder STRING_DECODER = new StringDecoder(CharsetUtil.UTF_8);
 
@@ -34,7 +35,8 @@ public class InnerChannelInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
         pipeline.addLast(new IdleStateHandler(0, 0, 5));
         // pipeline.addLast(new HeartbeatHandler());
-        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES));
+        // FIXME: now test for workerman frame protocol
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, -Integer.BYTES, Integer.BYTES));
         pipeline.addLast(LENGTH_FIELD_PREPENDER);
         // the encoder and decoder are static as these are sharable
         pipeline.addLast(STRING_DECODER);
