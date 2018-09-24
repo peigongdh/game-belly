@@ -28,7 +28,6 @@ public class InnerHandler extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext ctx, String s) {
         this.player.onClientMessage(s);
         this.world.updatePopulation(0);
-        ctx.writeAndFlush(s);
     }
 
     @Override
