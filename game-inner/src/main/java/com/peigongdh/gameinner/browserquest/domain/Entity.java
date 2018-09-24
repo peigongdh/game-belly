@@ -134,7 +134,7 @@ public class Entity {
     }
 
     void setPosition(Position pos) {
-        this.x = pos.getY();
+        this.x = pos.getX();
         this.y = pos.getY();
     }
 

@@ -191,7 +191,7 @@ public class Player extends Character {
             case Constant.TYPES_MESSAGES_WHO:
                 List<String> ids = new ArrayList<>();
                 for (Object m : message) {
-                    ids.add((String) m);
+                    ids.add(((Integer) m).toString());
                 }
                 // FIXME: array_shift ?
                 ids.remove(0);
@@ -294,7 +294,7 @@ public class Player extends Character {
                                 public void run() {
                                     self.firePotionTimeoutCallback();
                                 }
-                            }, 0, 15);
+                            }, 15 * 1000);
                         } else if (Types.isHealingItem(lootKind)) {
                             int amount = 0;
                             switch (lootKind) {
@@ -464,16 +464,16 @@ public class Player extends Character {
     private void resetTimeout() {
         if (null != disconnectTimer) {
             this.disconnectTimer.cancel();
-        } else {
-            this.disconnectTimer = new Timer();
+            this.disconnectTimer.purge();
         }
+        this.disconnectTimer = new Timer();
         Player self = this;
         this.disconnectTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 self.ctx.writeAndFlush("timeout");
             }
-        }, 0, 15 * 60 * 1000);
+        }, 15 * 60 * 1000, 15 * 60 * 1000);
     }
 
     void onRequestPosition(Supplier<Position> callback) {

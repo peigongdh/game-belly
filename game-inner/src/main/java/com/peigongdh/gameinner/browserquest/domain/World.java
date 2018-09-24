@@ -222,7 +222,7 @@ public class World {
     }
 
     void pushRelevantEntityListTo(Player player) {
-        if (null != player && null != this.groups.get(player.getGroupId())) {
+        if (null != player && null != player.getGroupId() && null != this.groups.get(player.getGroupId())) {
             ConcurrentHashMap<String, Entity> entities = this.groups.get(player.getGroupId()).getEntities();
             List<String> entityIds = new ArrayList<>(entities.keySet());
             entityIds = Util.reject(entityIds, id -> id.equals(player.getId()));
@@ -350,7 +350,7 @@ public class World {
                     updateCount[0] = 0;
                 }
             }
-        }, 0, 1000 / this.ups);
+        }, 1000 / this.ups, 1000 / this.ups);
 
         logger.info(this.id + " created capacity: " + this.maxPlayer + " players");
     }
@@ -411,7 +411,7 @@ public class World {
     private List<String> addToGroup(Entity entity, String groupId) {
         List<String> newGroupIds = new ArrayList<>();
         World self = this;
-        if (null != entity && null != this.groups.get(groupId)) {
+        if (null != entity && null != groupId && null != this.groups.get(groupId)) {
             this.map.forEachAdjacentGroup(groupId, id -> {
                 self.groups.get(id).getEntities().put(entity.getId(), entity);
                 newGroupIds.add(id);
@@ -469,11 +469,11 @@ public class World {
 
     private void spawnStaticEntities() {
         int count = 0;
-        for (java.util.Map.Entry<Integer, String> entry : this.map.getStaticEntities().entrySet()) {
-            int tId = entry.getKey();
+        for (java.util.Map.Entry<String, String> entry : this.map.getStaticEntities().entrySet()) {
+            String tId = entry.getKey();
             String kindName = entry.getValue();
             int kind = Types.getKindFromString(kindName);
-            Position pos = this.map.titleIndexToGridPostion(tId);
+            Position pos = this.map.titleIndexToGridPosition(Integer.parseInt(tId));
             if (Types.isNpc(kind)) {
                 this.addNpc(kind, pos.getX() + 1, pos.getY());
             }

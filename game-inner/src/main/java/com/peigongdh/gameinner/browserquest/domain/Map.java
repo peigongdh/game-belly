@@ -25,7 +25,7 @@ public class Map {
 
     private List<StaticChestConfig> staticChests;
 
-    private java.util.Map<Integer, String> staticEntities;
+    private java.util.Map<String, String> staticEntities;
 
     private java.util.Map<Integer, Checkpoint> checkpoints;
 
@@ -103,11 +103,11 @@ public class Map {
         this.staticChests = staticChests;
     }
 
-    public java.util.Map<Integer, String> getStaticEntities() {
+    public java.util.Map<String, String> getStaticEntities() {
         return staticEntities;
     }
 
-    public void setStaticEntities(java.util.Map<Integer, String> staticEntities) {
+    public void setStaticEntities(java.util.Map<String, String> staticEntities) {
         this.staticEntities = staticEntities;
     }
 
@@ -211,7 +211,7 @@ public class Map {
         Object staticChestsArray = mapObject.getJSONArray("staticChests");
         this.staticChests = JSON.parseArray(staticChestsArray.toString(), StaticChestConfig.class);
         Object staticEntitiesMap = mapObject.get("staticEntities");
-        this.staticEntities = JSON.parseObject(staticEntitiesMap.toString(), new TypeReference<HashMap<Integer, String>>() {
+        this.staticEntities = JSON.parseObject(staticEntitiesMap.toString(), new TypeReference<HashMap<String, String>>() {
         });
 
         Object doorsArray = mapObject.getJSONArray("doors");
@@ -239,7 +239,7 @@ public class Map {
         this.readyCallback = callback;
     }
 
-    public Position titleIndexToGridPostion(int titleNum) {
+    public Position titleIndexToGridPosition(int titleNum) {
         titleNum -= 1;
         int x = this.getX(titleNum + 1, this.width);
         int y = titleNum / this.width;
