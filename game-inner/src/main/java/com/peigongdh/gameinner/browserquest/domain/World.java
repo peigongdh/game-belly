@@ -224,8 +224,7 @@ public class World {
     void pushRelevantEntityListTo(Player player) {
         if (null != player && null != player.getGroupId() && null != this.groups.get(player.getGroupId())) {
             ConcurrentHashMap<String, Entity> entities = this.groups.get(player.getGroupId()).getEntities();
-            List<String> entityIds = new ArrayList<>(entities.keySet());
-            entityIds = Util.reject(entityIds, id -> id.equals(player.getId()));
+            List<String> entityIds = Util.reject(new ArrayList<>(entities.keySet()), id -> id.equals(player.getId()));
             if (null != entityIds && !entityIds.isEmpty()) {
                 this.pushToPlayer(player, new Lists(entityIds));
             }

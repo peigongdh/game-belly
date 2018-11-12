@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -48,8 +49,13 @@ public class Util {
     }
 
     public static <T> List<T> reject(List<T> list, Predicate<T> callback) {
-        list.removeIf(callback);
-        return list;
+        List<T> newList = new ArrayList<>();
+        for (T t : list) {
+            if (!callback.test(t)) {
+                newList.add(t);
+            }
+        }
+        return newList;
     }
 
     public static int distanceTo(int x1, int y1, int x2, int y2) {
