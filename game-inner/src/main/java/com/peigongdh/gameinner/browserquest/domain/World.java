@@ -1,5 +1,6 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
+import com.alibaba.fastjson.JSON;
 import com.peigongdh.gameinner.browserquest.common.Constant;
 import com.peigongdh.gameinner.browserquest.common.Properties;
 import com.peigongdh.gameinner.browserquest.common.Types;
@@ -570,8 +571,10 @@ public class World {
             if (null != this.outgoingQueues.get(id)) {
                 GateConnection conn = GateConnectionMap.getGateConnection(Long.parseLong(id));
                 assert conn != null;
-                conn.getCtx().writeAndFlush(this.outgoingQueues.get(id));
-                this.outgoingQueues.get(id).clear();
+                List<String> val = this.outgoingQueues.get(id);
+                String msg = JSON.toJSONString(val);
+                conn.getCtx().writeAndFlush(msg);
+                val.clear();
             }
         }
     }
