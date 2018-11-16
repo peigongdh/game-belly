@@ -59,6 +59,8 @@ public class Player extends Character {
 
     private Runnable zoneCallback;
 
+    private Runnable connectCallback;
+
     public boolean isHasEnteredGame() {
         return hasEnteredGame;
     }
@@ -147,6 +149,14 @@ public class Player extends Character {
         this.name = name;
     }
 
+    public Runnable getConnectCallback() {
+        return connectCallback;
+    }
+
+    public void setConnectCallback(Runnable connectCallback) {
+        this.connectCallback = connectCallback;
+    }
+
     public Player(String id, ChannelHandlerContext ctx, World world) {
         super(id, "player", Constant.TYPES_ENTITIES_WARRIOR, 0, 0);
         this.ctx = ctx;
@@ -157,9 +167,17 @@ public class Player extends Character {
         this.hater = new ConcurrentHashMap<>();
         this.lastCheckpoint = null;
         this.disconnectTimer = null;
+        this.onConnect(() -> this.send("go"));
+    }
+
+    public void onConnect(Runnable callback) {
+        this.connectCallback = callback;
     }
 
     public void onClientMessage(String data) {
+        if ("".equals(data)) {
+            return;
+        }
         JSONArray message = JSONObject.parseArray(data);
         Integer action = message.getInteger(0);
 

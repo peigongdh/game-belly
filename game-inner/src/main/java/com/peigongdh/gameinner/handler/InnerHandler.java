@@ -21,7 +21,8 @@ public class InnerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) {
         GateConnection conn = GateConnectionMap.addGateConnection(ctx);
         this.player = new Player(conn.getGateId().toString(), ctx, world);
-        world.getConnectCallback().accept(this.player);
+        this.player.getConnectCallback().run();
+        this.world.getConnectCallback().accept(this.player);
     }
 
     @Override
