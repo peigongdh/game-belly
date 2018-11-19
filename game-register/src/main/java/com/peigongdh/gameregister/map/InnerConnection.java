@@ -6,7 +6,7 @@ import io.netty.util.AttributeKey;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class InnerConnection {
-    
+
     private static final AtomicLong InnerIdGenerator = new AtomicLong(0);
 
     public static AttributeKey<Long> INNER_ID = AttributeKey.valueOf("innerId");

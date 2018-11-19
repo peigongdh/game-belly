@@ -131,7 +131,7 @@ public final class WebSocketClient {
 //                String msg = console.readLine();
             logger.info("start");
             Scanner s = new Scanner(new InputStreamReader(WebSocketClient.class.getClassLoader().getResourceAsStream("browser-quest-test.data")));
-            while(s.hasNext()) {
+            while (s.hasNext()) {
                 String msg = s.next();
                 logger.info("send: {}", msg);
                 if (msg == null) {

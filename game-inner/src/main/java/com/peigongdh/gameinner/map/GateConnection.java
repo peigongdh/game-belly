@@ -6,7 +6,7 @@ import io.netty.util.AttributeKey;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class GateConnection {
-    
+
     private static final AtomicLong gateIdGenerator = new AtomicLong(0);
 
     public static AttributeKey<Long> GATE_ID = AttributeKey.valueOf("gateId");
