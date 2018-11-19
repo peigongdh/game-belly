@@ -7,7 +7,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class InnerConnection {
 
-    private static final AtomicLong InnerIdGenerator = new AtomicLong(0);
+    private static final long START_INDEX = 2000000;
+
+    private static final AtomicLong InnerIdGenerator = new AtomicLong(START_INDEX);
 
     public static AttributeKey<Long> INNER_ID = AttributeKey.valueOf("innerId");
 

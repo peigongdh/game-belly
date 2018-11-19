@@ -168,8 +168,7 @@ public class World {
         });
 
         this.onEntityAttack(entity -> {
-            assert entity instanceof Mob;
-            Mob attacker = (Mob) entity;
+            Character attacker = (Character) entity;
             Entity target = self.getEntityById(attacker.getTargetId());
             if (null != target && attacker.getType().equals("mob")) {
                 Position pos = self.findPositionNextTo(attacker, target);

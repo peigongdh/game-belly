@@ -56,15 +56,16 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+        // FIXME: bug exist, how to close?
+        // cause.printStackTrace();
         // if is gate channel broadcast to each inner channel
-        GateConnectionMap.removeGateConnection(ctx);
-        String gateAddress = this.getGateAddress();
-        for (InnerConnection innerConnection : InnerConnectionMap.innerConnectionMap.values()) {
-            innerConnection.getCtx().writeAndFlush(gateAddress);
-        }
-        InnerConnectionMap.removeInnerConnection(ctx);
-        ctx.close();
+        this.closeRegisterClient(ctx);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        this.closeRegisterClient(ctx);
+        logger.error("register client disconnected!");
     }
 
     private String getGateAddress() {
@@ -78,9 +79,21 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         return data.toJSONString();
     }
 
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        GateConnectionMap.removeGateConnection(ctx);
-        logger.error("register client disconnected!");
+    private void closeRegisterClient(ChannelHandlerContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+        // FIXME: ctx.channel().hasAttr(GateConnection.GATE_ID) = TRUE & ctx.channel().hasAttr(InnerConnection.INNER_ID) = TRUE, why ?
+        if (ctx.channel().attr(GateConnection.GATE_ID).get() != null) {
+            GateConnectionMap.removeGateConnection(ctx);
+        }
+        if (ctx.channel().attr(InnerConnection.INNER_ID).get() != null) {
+            String gateAddress = this.getGateAddress();
+            for (InnerConnection innerConnection : InnerConnectionMap.innerConnectionMap.values()) {
+                innerConnection.getCtx().writeAndFlush(gateAddress);
+            }
+            InnerConnectionMap.removeInnerConnection(ctx);
+        }
+        ctx.close();
     }
 }
