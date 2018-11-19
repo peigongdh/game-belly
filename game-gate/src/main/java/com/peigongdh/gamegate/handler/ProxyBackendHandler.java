@@ -21,6 +21,15 @@ public class ProxyBackendHandler extends SimpleChannelInboundHandler<String> {
         ctx.read();
     }
 
+
+    // FIXME: BUG here, when game-client reload
+//    2018-11-19 19:35:51 INFO  ProxyBackendHandler:32 - ProxyBackendHandler [id: 0x4c089f87, L:/127.0.0.1:57113 - R:localhost/127.0.0.1:8001] cause: {}
+//    java.lang.UnsupportedOperationException: unsupported message type: TextWebSocketFrame (expected: ByteBuf, FileRegion)
+//        at io.netty.channel.nio.AbstractNioByteChannel.filterOutboundMessage(AbstractNioByteChannel.java:283)
+//        at io.netty.channel.AbstractChannel$AbstractUnsafe.write(AbstractChannel.java:877)
+//        at io.netty.channel.DefaultChannelPipeline$HeadContext.write(DefaultChannelPipeline.java:1391)
+//        at io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:738)
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String s) {
         inboundChannel.writeAndFlush(new TextWebSocketFrame(s)).addListener((ChannelFutureListener) future -> {
