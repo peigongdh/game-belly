@@ -7,9 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class GateConnection {
 
-    private static final long START_INDEX = 1000000;
-
-    private static final AtomicLong gateIdGenerator = new AtomicLong(START_INDEX);
+    private static final AtomicLong gateIdGenerator = new AtomicLong(0);
 
     public static AttributeKey<Long> GATE_ID = AttributeKey.valueOf("gateId");
 
