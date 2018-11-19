@@ -25,7 +25,7 @@ public class ClientConnection {
     public ClientConnection(ChannelHandlerContext ctx) {
         this.clientId = generateClientId();
         this.ctx = ctx;
-        this.ctx.channel().attr(ClientConnection.CLIENT_ID).set(clientId);
+        this.ctx.channel().attr(ClientConnection.CLIENT_ID).setIfAbsent(clientId);
     }
 
     public Long getClientId() {

@@ -25,6 +25,7 @@ public class GateConnection {
         this.gateId = generateGateId();
         this.address = address;
         this.ctx = ctx;
+        this.ctx.channel().attr(GateConnection.GATE_ID).setIfAbsent(this.gateId);
     }
 
     public Long getGateId() {

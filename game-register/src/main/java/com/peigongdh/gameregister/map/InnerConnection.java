@@ -24,6 +24,7 @@ public class InnerConnection {
     public InnerConnection(ChannelHandlerContext ctx) {
         this.innerId = generateInnerId();
         this.ctx = ctx;
+        this.ctx.channel().attr(InnerConnection.INNER_ID).setIfAbsent(this.innerId);
     }
 
     public Long getInnerId() {
