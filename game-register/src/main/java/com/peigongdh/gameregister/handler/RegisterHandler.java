@@ -60,6 +60,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         // cause.printStackTrace();
         // if is gate channel broadcast to each inner channel
         this.closeRegisterClient(ctx);
+        cause.printStackTrace();
     }
 
     @Override

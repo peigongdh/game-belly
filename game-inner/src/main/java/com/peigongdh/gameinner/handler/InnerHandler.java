@@ -34,15 +34,19 @@ public class InnerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         GateConnectionMap.removeGateConnection(ctx);
-        this.player.onClientClose();
-        this.player = null;
+        if (this.player != null) {
+            this.player.onClientClose();
+            this.player = null;
+        }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         GateConnectionMap.removeGateConnection(ctx);
-        this.player.onClientClose();
-        this.player = null;
+        if (this.player != null) {
+            this.player.onClientClose();
+            this.player = null;
+        }
         cause.printStackTrace();
         ctx.close();
     }

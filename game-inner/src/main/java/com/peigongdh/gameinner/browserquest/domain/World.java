@@ -568,11 +568,13 @@ public class World {
         for (java.util.Map.Entry<String, List<String>> entry : this.outgoingQueues.entrySet()) {
             String id = entry.getKey();
             if (null != this.outgoingQueues.get(id)) {
-                GateConnection conn = GateConnectionMap.getGateConnection(Long.parseLong(id));
-                assert conn != null;
                 List<String> val = this.outgoingQueues.get(id);
                 String msg = JSON.toJSONString(val);
-                conn.getCtx().writeAndFlush(msg);
+                // send
+                GateConnection conn = GateConnectionMap.getGateConnection(Long.parseLong(id));
+                if (conn != null && conn.getCtx() != null) {
+                    conn.getCtx().writeAndFlush(msg);
+                }
                 val.clear();
             }
         }

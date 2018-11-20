@@ -32,7 +32,8 @@ public class ProxyBackendHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String s) {
-        inboundChannel.writeAndFlush(new TextWebSocketFrame(s)).addListener((ChannelFutureListener) future -> {
+        ChannelFuture f = inboundChannel.writeAndFlush(new TextWebSocketFrame(s));
+        f.addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 // was able to flush out data, start to read the next chunk
                 logger.info("ProxyBackendHandler {} isSuccess: {}", ctx.channel(), future.isSuccess());

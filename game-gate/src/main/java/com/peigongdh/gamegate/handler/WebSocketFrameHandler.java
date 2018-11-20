@@ -2,7 +2,6 @@ package com.peigongdh.gamegate.handler;
 
 import com.peigongdh.gamegate.map.ClientConnectionMap;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
@@ -27,7 +26,6 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ClientConnectionMap.addClientConnection(ctx);
         final Channel inboundChannel = ctx.channel();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(inboundChannel.eventLoop())
@@ -43,6 +41,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
                 inboundChannel.close();
             }
         });
+        ClientConnectionMap.addClientConnection(ctx);
     }
 
     @Override
@@ -51,10 +50,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
         if (frame instanceof TextWebSocketFrame) {
             if (outboundChannel.isActive()) {
-                // FIXME: PooledUnsafeDirectByteBuf
-                ByteBuf request = frame.copy().content();
-                logger.info("{} received {}", ctx.channel(), request.toString());
-                outboundChannel.writeAndFlush(request).addListener((ChannelFutureListener) future -> {
+                outboundChannel.writeAndFlush(((TextWebSocketFrame) frame).text()).addListener((ChannelFutureListener) future -> {
                     if (future.isSuccess()) {
                         // was able to flush out data, start to read the next chunk
                         logger.info("WebSocketFrameHandler {} isSuccess: {}", ctx.channel(), future.isSuccess());
