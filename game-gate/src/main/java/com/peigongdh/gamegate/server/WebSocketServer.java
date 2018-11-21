@@ -79,6 +79,7 @@ public class WebSocketServer {
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new WebSocketChannelInitializer(innerHostname, innerPort))
                     .option(ChannelOption.SO_BACKLOG, backlog)
+                    .childOption(ChannelOption.AUTO_READ, false)
                     .childOption(ChannelOption.SO_KEEPALIVE, keepAlive)
                     .childOption(ChannelOption.TCP_NODELAY, true);
             channel = serverBootstrap.bind(webSocketPort).sync().channel();
