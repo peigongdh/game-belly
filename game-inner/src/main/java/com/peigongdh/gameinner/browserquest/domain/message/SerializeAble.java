@@ -1,5 +1,7 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
+import java.util.List;
+
 public interface SerializeAble {
-    String serialize();
+    List<Object> serialize();
 }

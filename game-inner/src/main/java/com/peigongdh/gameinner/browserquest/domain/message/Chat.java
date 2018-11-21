@@ -1,6 +1,5 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.alibaba.fastjson.JSON;
 import com.peigongdh.gameinner.browserquest.common.Constant;
 
 import java.util.ArrayList;
@@ -18,11 +17,11 @@ public class Chat implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_CHAT);
         list.add(this.playerId);
         list.add(this.msg);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

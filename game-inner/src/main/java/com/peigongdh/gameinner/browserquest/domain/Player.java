@@ -1,5 +1,6 @@
 package com.peigongdh.gameinner.browserquest.domain;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.peigongdh.gameinner.browserquest.common.Constant;
@@ -202,7 +203,7 @@ public class Player extends Character {
                 this.world.getEnterCallback().accept(this);
 
                 SerializeAble welcome = new Welcome(this.id, this.name, this.x, this.y, this.hitPoints);
-                this.send(welcome.serialize());
+                this.send(JSON.toJSONString(welcome.serialize()));
                 this.hasEnteredGame = true;
                 this.dead = false;
                 break;
@@ -461,7 +462,7 @@ public class Player extends Character {
                 this.equip(item.getKind());
                 this.updateHitPoints();
                 SerializeAble message = new HitPoints(this.maxHitPoints);
-                this.send(message.serialize());
+                this.send(JSON.toJSONString(message.serialize()));
             } else if (Types.isWeapon(item.getKind())) {
                 this.equipWeapon(item.getKind());
             }

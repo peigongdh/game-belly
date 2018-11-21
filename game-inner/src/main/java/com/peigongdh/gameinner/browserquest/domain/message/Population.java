@@ -18,11 +18,11 @@ public class Population implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_POPULATION);
         list.add(this.world);
         list.add(this.total);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

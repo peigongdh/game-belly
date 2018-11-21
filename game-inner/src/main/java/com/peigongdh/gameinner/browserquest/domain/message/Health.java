@@ -18,13 +18,13 @@ public class Health implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_HEALTH);
         list.add(this.points);
         if (this.isRegen) {
             list.add(1);
         }
-        return JSON.toJSONString(list);
+        return list;
     }
 }

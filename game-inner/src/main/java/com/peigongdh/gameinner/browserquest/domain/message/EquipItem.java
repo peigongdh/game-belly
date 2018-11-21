@@ -18,11 +18,11 @@ public class EquipItem implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_EQUIP);
         list.add(this.playerId);
         list.add(this.itemKind);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

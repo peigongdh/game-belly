@@ -16,10 +16,10 @@ public class Spawn implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_SPAWN);
         list.addAll(this.entity.getState());
-        return JSON.toJSONString(list);
+        return list;
     }
 }

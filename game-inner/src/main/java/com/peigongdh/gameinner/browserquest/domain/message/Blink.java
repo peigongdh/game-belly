@@ -15,10 +15,10 @@ public class Blink implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_DESTROY);
         list.add(this.itemId);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

@@ -21,17 +21,17 @@ public class Drop implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_DROP);
         list.add(this.mob.getId());
         list.add(this.item.getId());
         list.add(this.item.getKind());
-        List<String> ids = new ArrayList<>();
+        List<Object> ids = new ArrayList<>();
         for (Hate hate : this.mob.getHateList()) {
             ids.add(hate.getId());
         }
         list.add(ids);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

@@ -27,7 +27,7 @@ public class Welcome implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_WELCOME);
         list.add(this.id);
@@ -35,6 +35,6 @@ public class Welcome implements SerializeAble {
         list.add(this.x);
         list.add(this.y);
         list.add(this.hitPoints);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

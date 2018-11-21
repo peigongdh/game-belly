@@ -16,12 +16,12 @@ public class Move implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_MOVE);
         list.add(this.entity.getId());
         list.add(this.entity.getX());
         list.add(this.entity.getY());
-        return JSON.toJSONString(list);
+        return list;
     }
 }

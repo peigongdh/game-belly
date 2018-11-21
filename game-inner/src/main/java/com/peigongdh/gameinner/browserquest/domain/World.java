@@ -49,7 +49,7 @@ public class World {
 
     private ConcurrentHashMap<String, Group> groups;
 
-    private ConcurrentHashMap<String, List<String>> outgoingQueues;
+    private ConcurrentHashMap<String, List<Object>> outgoingQueues;
 
     private int itemCount;
 
@@ -565,10 +565,10 @@ public class World {
     }
 
     private void processQueues() {
-        for (java.util.Map.Entry<String, List<String>> entry : this.outgoingQueues.entrySet()) {
+        for (java.util.Map.Entry<String, List<Object>> entry : this.outgoingQueues.entrySet()) {
             String id = entry.getKey();
-            if (null != this.outgoingQueues.get(id)) {
-                List<String> val = this.outgoingQueues.get(id);
+            if (this.outgoingQueues.get(id).size() != 0) {
+                List<Object> val = this.outgoingQueues.get(id);
                 String msg = JSON.toJSONString(val);
                 // send
                 GateConnection conn = GateConnectionMap.getGateConnection(Long.parseLong(id));
@@ -782,7 +782,7 @@ public class World {
     }
 
     private void pushBroadcast(SerializeAble message, String ignoredPlayerId) {
-        for (java.util.Map.Entry<String, List<String>> entry : this.outgoingQueues.entrySet()) {
+        for (java.util.Map.Entry<String, List<Object>> entry : this.outgoingQueues.entrySet()) {
             String id = entry.getKey();
             if (!id.equals(ignoredPlayerId)) {
                 this.outgoingQueues.get(id).add(message.serialize());

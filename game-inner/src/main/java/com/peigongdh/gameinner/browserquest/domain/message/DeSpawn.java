@@ -15,10 +15,10 @@ public class DeSpawn implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_DESPAWN);
         list.add(this.entityId);
-        return JSON.toJSONString(list);
+        return list;
     }
 }

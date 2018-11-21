@@ -15,10 +15,10 @@ public class Kill implements SerializeAble {
     }
 
     @Override
-    public String serialize() {
+    public List<Object> serialize() {
         List<Object> list = new ArrayList<>();
         list.add(Constant.TYPES_MESSAGES_KILL);
         list.add(this.mobKind);
-        return JSON.toJSONString(list);
+        return list;
     }
 }
