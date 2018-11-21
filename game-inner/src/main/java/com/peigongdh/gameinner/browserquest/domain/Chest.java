@@ -9,7 +9,7 @@ public class Chest extends Item {
 
     private List<Integer> items;
 
-    public Chest(String id, int x, int y) {
+    public Chest(int id, int x, int y) {
         super(id, Constant.TYPES_ENTITIES_CHEST, x, y);
     }
 

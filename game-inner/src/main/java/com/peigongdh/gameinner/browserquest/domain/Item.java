@@ -55,7 +55,7 @@ public class Item extends Entity {
         this.respawnCallback = respawnCallback;
     }
 
-    Item(String id, int kind, int x, int y) {
+    Item(int id, int kind, int x, int y) {
         super(id, "item", kind, x, y);
         this.isStatic = false;
         this.isFromChest = false;
@@ -112,7 +112,7 @@ public class Item extends Entity {
      */
 
     public static void main(String[] args) {
-        new Item("1", 0, 0, 0).handleDeSpawn(
+        new Item(1, 0, 0, 0).handleDeSpawn(
                 10000,
                 () -> System.out.println("blinkCallback: "),
                 4000,

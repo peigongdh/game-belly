@@ -31,7 +31,8 @@ public class MobArea extends Area {
         // FIXME: id is string
         int k = Types.getKindFromString(this.kind);
         Position pos = this.getRandomPositionInsideArea();
-        Mob mob = new Mob("1" + this.getId() + "" + k + "" + this.entities.size(), k, pos.getX(), pos.getY());
+        // FIXME: check mod id
+        Mob mob = new Mob(Integer.parseInt("1" + this.getId() + "" + k + "" + this.entities.size()), k, pos.getX(), pos.getY());
         mob.onMove(mob1 -> this.world.onMobMoveCallback(mob1));
         return mob;
     }

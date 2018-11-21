@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Entity {
 
-    protected String id;
+    protected int id;
 
     protected Area area;
 
@@ -27,11 +27,11 @@ public class Entity {
 
     protected List<String> recentlyLeftGroupIds;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -99,7 +99,7 @@ public class Entity {
         this.recentlyLeftGroupIds = recentlyLeftGroupIds;
     }
 
-    public Entity(String id, String type, int kind, int x, int y) {
+    public Entity(int id, String type, int kind, int x, int y) {
         this.id = id;
         this.type = type;
         this.kind = kind;

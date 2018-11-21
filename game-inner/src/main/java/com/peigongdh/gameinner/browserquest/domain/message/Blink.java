@@ -1,6 +1,5 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.alibaba.fastjson.JSON;
 import com.peigongdh.gameinner.browserquest.common.Constant;
 
 import java.util.ArrayList;
@@ -8,9 +7,9 @@ import java.util.List;
 
 public class Blink implements SerializeAble {
 
-    private String itemId;
+    private int itemId;
 
-    public Blink(String itemId) {
+    public Blink(int itemId) {
         this.itemId = itemId;
     }
 

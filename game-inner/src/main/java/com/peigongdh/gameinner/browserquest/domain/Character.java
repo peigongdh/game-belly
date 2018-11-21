@@ -18,9 +18,9 @@ public class Character extends Entity {
 
     protected int hitPoints;
 
-    protected String targetId;
+    protected int targetId;
 
-    protected ConcurrentHashMap<String, Entity> attackers;
+    protected ConcurrentHashMap<Integer, Entity> attackers;
 
     public int getHitPoints() {
         return hitPoints;
@@ -46,19 +46,19 @@ public class Character extends Entity {
         this.maxHitPoints = maxHitPoints;
     }
 
-    public String getTargetId() {
+    public int getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(String targetId) {
+    public void setTargetId(int targetId) {
         this.targetId = targetId;
     }
 
-    public ConcurrentHashMap<String, Entity> getAttackers() {
+    public ConcurrentHashMap<Integer, Entity> getAttackers() {
         return attackers;
     }
 
-    public void setAttackers(ConcurrentHashMap<String, Entity> attackers) {
+    public void setAttackers(ConcurrentHashMap<Integer, Entity> attackers) {
         this.attackers = attackers;
     }
 
@@ -70,12 +70,12 @@ public class Character extends Entity {
         this.callback = callback;
     }
 
-    public Character(String id, String type, int kind, int x, int y) {
+    public Character(int id, String type, int kind, int x, int y) {
         super(id, type, kind, x, y);
         this.orientation = Util.randomOrientation();
         this.maxHitPoints = 100;
         this.hitPoints = 10;
-        this.targetId = null;
+        this.targetId = 0;
         this.attackers = new ConcurrentHashMap<>();
     }
 
@@ -83,7 +83,7 @@ public class Character extends Entity {
     public List<Object> getState() {
         List<Object> list = new ArrayList<>(this.getBaseState());
         list.add(this.orientation);
-        if (null != this.targetId) {
+        if (0 != this.targetId) {
             list.add(targetId);
         }
         return list;
@@ -115,11 +115,11 @@ public class Character extends Entity {
     }
 
     public void clearTarget() {
-        this.targetId = null;
+        this.targetId = 0;
     }
 
     public boolean hasTarget() {
-        return this.targetId != null;
+        return this.targetId != 0;
     }
 
     public Attack attack() {
@@ -145,7 +145,7 @@ public class Character extends Entity {
     }
 
     public void forEachAttacker(Consumer<Mob> callback) {
-        for (Map.Entry<String, Entity> entry : this.attackers.entrySet()) {
+        for (Map.Entry<Integer, Entity> entry : this.attackers.entrySet()) {
             callback.accept((Mob) entry.getValue());
         }
     }
@@ -162,7 +162,7 @@ public class Character extends Entity {
     }
 
     public void forEachAttacker2() {
-        for (Map.Entry<String, Entity> entry : this.attackers.entrySet()) {
+        for (Map.Entry<Integer, Entity> entry : this.attackers.entrySet()) {
             this.callback.accept(entry.getValue());
         }
     }
@@ -172,9 +172,9 @@ public class Character extends Entity {
     }
 
     public static void main(String[] args) {
-        Character c1 = new Character("1", "", 0, 0, 0);
-        Character c2 = new Character("2", "", 0, 0, 0);
-        Character c3 = new Character("3", "", 0, 0, 0);
+        Character c1 = new Character(1, "", 0, 0, 0);
+        Character c2 = new Character(2, "", 0, 0, 0);
+        Character c3 = new Character(3, "", 0, 0, 0);
         c1.addAttacker(c2);
         c1.addAttacker(c3);
         c1.setForEachAttackerCallback(entity -> System.out.println(entity.getId()));

@@ -17,7 +17,7 @@ public class Area {
 
     protected World world;
 
-    protected ConcurrentHashMap<String, Entity> entities;
+    protected ConcurrentHashMap<Integer, Entity> entities;
 
     protected boolean hasCompletelyReSpawned;
 
@@ -73,11 +73,11 @@ public class Area {
         this.world = world;
     }
 
-    public ConcurrentHashMap<String, Entity> getEntities() {
+    public ConcurrentHashMap<Integer, Entity> getEntities() {
         return entities;
     }
 
-    public void setEntities(ConcurrentHashMap<String, Entity> entities) {
+    public void setEntities(ConcurrentHashMap<Integer, Entity> entities) {
         this.entities = entities;
     }
 
@@ -131,7 +131,7 @@ public class Area {
     }
 
     private boolean isEmpty() {
-        for (Map.Entry<String, Entity> entry : this.entities.entrySet()) {
+        for (Map.Entry<Integer, Entity> entry : this.entities.entrySet()) {
             Entity entity = entry.getValue();
             if (!entity.isDead()) {
                 return false;

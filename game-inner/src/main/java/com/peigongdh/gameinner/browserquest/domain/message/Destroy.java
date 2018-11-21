@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Destroy implements SerializeAble {
 
-    private String entityId;
+    private int entityId;
 
-    public Destroy(String entityId) {
+    public Destroy(int entityId) {
         this.entityId = entityId;
     }
 

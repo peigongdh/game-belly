@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Lists implements SerializeAble {
 
-    private List<String> ids;
+    private List<Integer> ids;
 
-    public Lists(List<String> ids) {
+    public Lists(List<Integer> ids) {
         this.ids = ids;
     }
 

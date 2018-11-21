@@ -1,6 +1,5 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.alibaba.fastjson.JSON;
 import com.peigongdh.gameinner.browserquest.common.Constant;
 
 import java.util.ArrayList;
@@ -8,9 +7,9 @@ import java.util.List;
 
 public class DeSpawn implements SerializeAble {
 
-    private String entityId;
+    private int entityId;
 
-    public DeSpawn(String entityId) {
+    public DeSpawn(int entityId) {
         this.entityId = entityId;
     }
 

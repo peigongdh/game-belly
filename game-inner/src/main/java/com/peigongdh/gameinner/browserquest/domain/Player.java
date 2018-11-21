@@ -24,7 +24,7 @@ public class Player extends Character {
 
     private boolean hasEnteredGame;
 
-    private ConcurrentHashMap<String, Mob> hater;
+    private ConcurrentHashMap<Integer, Mob> hater;
 
     private Checkpoint lastCheckpoint;
 
@@ -70,11 +70,11 @@ public class Player extends Character {
         this.hasEnteredGame = hasEnteredGame;
     }
 
-    public ConcurrentHashMap<String, Mob> getHater() {
+    public ConcurrentHashMap<Integer, Mob> getHater() {
         return hater;
     }
 
-    public void setHater(ConcurrentHashMap<String, Mob> hater) {
+    public void setHater(ConcurrentHashMap<Integer, Mob> hater) {
         this.hater = hater;
     }
 
@@ -158,7 +158,7 @@ public class Player extends Character {
         this.connectCallback = connectCallback;
     }
 
-    public Player(String id, ChannelHandlerContext ctx, World world) {
+    public Player(int id, ChannelHandlerContext ctx, World world) {
         super(id, "player", Constant.TYPES_ENTITIES_WARRIOR, 0, 0);
         this.ctx = ctx;
         this.world = world;
@@ -208,9 +208,9 @@ public class Player extends Character {
                 this.dead = false;
                 break;
             case Constant.TYPES_MESSAGES_WHO:
-                List<String> ids = new ArrayList<>();
+                List<Integer> ids = new ArrayList<>();
                 for (Object m : message) {
-                    ids.add(((Integer) m).toString());
+                    ids.add((Integer) m);
                 }
                 // FIXME: array_shift ?
                 ids.remove(0);
@@ -242,7 +242,7 @@ public class Player extends Character {
                 if (null != this.lootMoveCallback) {
                     int lootMoveX = message.getInteger(1);
                     int lootMoveY = message.getInteger(2);
-                    String id = message.getString(3);
+                    int id = message.getInteger(3);
                     this.setPosition(lootMoveX, lootMoveY);
                     Entity item = this.world.getEntityById(id);
                     if (null != item) {
@@ -255,12 +255,12 @@ public class Player extends Character {
                 break;
             case Constant.TYPES_MESSAGES_AGGRO:
                 if (null != this.moveCallback) {
-                    String mobId = message.getString(1);
+                    int mobId = message.getInteger(1);
                     this.world.handleMobHate(mobId, this.id, 5);
                 }
                 break;
             case Constant.TYPES_MESSAGES_ATTACK:
-                String attackMobId = message.getString(1);
+                int attackMobId = message.getInteger(1);
                 Entity attackMob = this.world.getEntityById(attackMobId);
                 if (null != attackMob) {
                     this.setTargetId(attackMob.getId());
@@ -268,7 +268,7 @@ public class Player extends Character {
                 }
                 break;
             case Constant.TYPES_MESSAGES_HIT:
-                String hitMobId = message.getString(1);
+                int hitMobId = message.getInteger(1);
                 Mob hitMob = (Mob) this.world.getEntityById(hitMobId);
                 if (null != hitMob) {
                     int dmg = Formulas.dmg(this.weaponLevel, hitMob.getArmorLevel());
@@ -280,7 +280,7 @@ public class Player extends Character {
                 }
                 break;
             case Constant.TYPES_MESSAGES_HURT:
-                String hurtMobId = message.getString(1);
+                int hurtMobId = message.getInteger(1);
                 Mob hurtMob = (Mob) this.world.getEntityById(hurtMobId);
                 if (null != hurtMob) {
                     this.hitPoints -= Formulas.dmg(hurtMob.getWeaponLevel(), this.armorLevel);
@@ -295,7 +295,7 @@ public class Player extends Character {
                 }
                 break;
             case Constant.TYPES_MESSAGES_LOOT:
-                Entity lootEntity = this.world.getEntityById(message.getString(1));
+                Entity lootEntity = this.world.getEntityById(message.getInteger(1));
                 if (null != lootEntity) {
                     int lootKind = lootEntity.getKind();
                     if (Types.isItem(lootEntity.getKind())) {
@@ -348,7 +348,7 @@ public class Player extends Character {
                 }
                 break;
             case Constant.TYPES_MESSAGES_OPEN:
-                Entity chest = this.world.getEntityById(message.getString(1));
+                Entity chest = this.world.getEntityById(message.getInteger(1));
                 if (chest instanceof Chest) {
                     this.world.handleOpenedChest((Chest) chest, this);
                 }
@@ -402,7 +402,7 @@ public class Player extends Character {
         list.add(this.orientation);
         list.add(this.armor);
         list.add(this.weapon);
-        if (null != this.targetId) {
+        if (0 != this.targetId) {
             list.add(targetId);
         }
         return list;

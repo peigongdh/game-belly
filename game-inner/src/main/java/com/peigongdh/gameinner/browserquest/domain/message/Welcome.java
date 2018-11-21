@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Welcome implements SerializeAble {
 
-    private String id;
+    private int id;
 
     private String name;
 
@@ -18,7 +18,7 @@ public class Welcome implements SerializeAble {
 
     private int hitPoints;
 
-    public Welcome(String id, String name, int x, int y, int hitPoints) {
+    public Welcome(int id, String name, int x, int y, int hitPoints) {
         this.id = id;
         this.name = name;
         this.x = x;

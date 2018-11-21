@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Damage implements SerializeAble {
 
-    private String entityId;
+    private int entityId;
 
     private int points;
 
-    public Damage(String entityId, int points) {
+    public Damage(int entityId, int points) {
         this.entityId = entityId;
         this.points = points;
     }

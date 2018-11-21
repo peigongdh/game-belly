@@ -2,20 +2,20 @@ package com.peigongdh.gameinner.browserquest.domain;
 
 public class Hate {
 
-    private String id;
+    private int id;
 
     private int hate;
 
-    public Hate(String id, int hate) {
+    public Hate(int id, int hate) {
         this.id = id;
         this.hate = hate;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

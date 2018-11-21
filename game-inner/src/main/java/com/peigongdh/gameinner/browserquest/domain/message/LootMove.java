@@ -1,6 +1,5 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.alibaba.fastjson.JSON;
 import com.peigongdh.gameinner.browserquest.common.Constant;
 
 import java.util.ArrayList;
@@ -8,11 +7,11 @@ import java.util.List;
 
 public class LootMove implements SerializeAble {
 
-    private String entityId;
+    private int entityId;
 
-    private String itemId;
+    private int itemId;
 
-    public LootMove(String entityId, String itemId) {
+    public LootMove(int entityId, int itemId) {
         this.entityId = entityId;
         this.itemId = itemId;
     }

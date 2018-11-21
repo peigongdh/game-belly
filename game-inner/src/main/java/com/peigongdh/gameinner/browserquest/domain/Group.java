@@ -8,11 +8,11 @@ public class Group {
 
     private String id;
 
-    private ConcurrentHashMap<String, Entity> entities;
+    private ConcurrentHashMap<Integer, Entity> entities;
 
     private List<Entity> incoming;
 
-    private List<String> playerIds;
+    private List<Integer> playerIds;
 
     public String getId() {
         return id;
@@ -22,11 +22,11 @@ public class Group {
         this.id = id;
     }
 
-    public ConcurrentHashMap<String, Entity> getEntities() {
+    public ConcurrentHashMap<Integer, Entity> getEntities() {
         return entities;
     }
 
-    public void setEntities(ConcurrentHashMap<String, Entity> entities) {
+    public void setEntities(ConcurrentHashMap<Integer, Entity> entities) {
         this.entities = entities;
     }
 
@@ -38,11 +38,11 @@ public class Group {
         this.incoming = incoming;
     }
 
-    public List<String> getPlayerIds() {
+    public List<Integer> getPlayerIds() {
         return playerIds;
     }
 
-    public void setPlayerIds(List<String> playerIds) {
+    public void setPlayerIds(List<Integer> playerIds) {
         this.playerIds = playerIds;
     }
 

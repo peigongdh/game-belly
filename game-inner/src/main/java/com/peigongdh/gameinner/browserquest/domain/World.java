@@ -30,18 +30,18 @@ public class World {
 
     private Map map;
 
-    private ConcurrentHashMap<String, Entity> entities;
+    private ConcurrentHashMap<Integer, Entity> entities;
 
-    private ConcurrentHashMap<String, Player> players;
+    private ConcurrentHashMap<Integer, Player> players;
 
-    private ConcurrentHashMap<String, Mob> mobs;
+    private ConcurrentHashMap<Integer, Mob> mobs;
 
     // FIXME: remove?
-    private ConcurrentHashMap<String, Entity> attackers;
+    private ConcurrentHashMap<Integer, Entity> attackers;
 
-    private ConcurrentHashMap<String, Item> items;
+    private ConcurrentHashMap<Integer, Item> items;
 
-    private ConcurrentHashMap<String, Npc> npcs;
+    private ConcurrentHashMap<Integer, Npc> npcs;
 
     private List<MobArea> mobAreas;
 
@@ -49,7 +49,7 @@ public class World {
 
     private ConcurrentHashMap<String, Group> groups;
 
-    private ConcurrentHashMap<String, List<Object>> outgoingQueues;
+    private ConcurrentHashMap<Integer, List<Object>> outgoingQueues;
 
     private int itemCount;
 
@@ -193,13 +193,13 @@ public class World {
     }
 
     private void forEachMob(Consumer<Character> callback) {
-        for (java.util.Map.Entry<String, Player> entry : this.players.entrySet()) {
+        for (java.util.Map.Entry<Integer, Player> entry : this.players.entrySet()) {
             callback.accept(entry.getValue());
         }
     }
 
     private void forEachPlayer(Consumer<Character> callback) {
-        for (java.util.Map.Entry<String, Mob> entry : this.mobs.entrySet()) {
+        for (java.util.Map.Entry<Integer, Mob> entry : this.mobs.entrySet()) {
             callback.accept(entry.getValue());
         }
     }
@@ -223,8 +223,8 @@ public class World {
 
     void pushRelevantEntityListTo(Player player) {
         if (null != player && null != player.getGroupId() && null != this.groups.get(player.getGroupId())) {
-            ConcurrentHashMap<String, Entity> entities = this.groups.get(player.getGroupId()).getEntities();
-            List<String> entityIds = Util.reject(new ArrayList<>(entities.keySet()), id -> id.equals(player.getId()));
+            ConcurrentHashMap<Integer, Entity> entities = this.groups.get(player.getGroupId()).getEntities();
+            List<Integer> entityIds = Util.reject(new ArrayList<>(entities.keySet()), id -> id == player.getId());
             if (null != entityIds && !entityIds.isEmpty()) {
                 this.pushToPlayer(player, new Lists(entityIds));
             }
@@ -235,7 +235,7 @@ public class World {
         // Push this message to all groups which are not going to be updated anymore,
         // since the player left them.
         for (String id : player.getRecentlyLeftGroupIds()) {
-            this.pushToGroup(id, message, null);
+            this.pushToGroup(id, message, 0);
         }
         player.getRecentlyLeftGroupIds().clear();
     }
@@ -362,7 +362,7 @@ public class World {
 
     private Item createItem(int kind, int x, int y) {
         Item item;
-        String id = "9" + this.itemCount++;
+        int id = Integer.parseInt("9" + this.itemCount++);
         if (kind == Constant.TYPES_ENTITIES_CHEST) {
             item = new Chest(id, x, y);
         } else {
@@ -477,7 +477,7 @@ public class World {
                 this.addNpc(kind, pos.getX() + 1, pos.getY());
             }
             if (Types.isMob(kind)) {
-                Mob mob = new Mob("7" + kind + count++, kind, pos.getX() + 1, pos.getY());
+                Mob mob = new Mob(Integer.parseInt("7" + kind + count++), kind, pos.getX() + 1, pos.getY());
                 World self = this;
                 mob.onReSpawn(() -> {
                     mob.setDead(false);
@@ -504,16 +504,16 @@ public class World {
         }
     }
 
-    private void pushToAdjacentGroups(String groupId, SerializeAble message, String ignoredPlayerId) {
+    private void pushToAdjacentGroups(String groupId, SerializeAble message, int ignoredPlayerId) {
         World self = this;
         this.map.forEachAdjacentGroup(groupId, id -> self.pushToGroup(id, message, ignoredPlayerId));
     }
 
-    private void pushToGroup(String groupId, SerializeAble message, String ignoredPlayerId) {
+    private void pushToGroup(String groupId, SerializeAble message, int ignoredPlayerId) {
         Group group = this.groups.get(groupId);
         if (null != group) {
-            for (String playerId : group.getPlayerIds()) {
-                if (null != ignoredPlayerId && !playerId.equals(ignoredPlayerId)) {
+            for (Integer playerId : group.getPlayerIds()) {
+                if (0 != ignoredPlayerId && !playerId.equals(ignoredPlayerId)) {
                     this.pushToPlayer((Player) this.getEntityById(playerId), message);
                 }
             }
@@ -528,7 +528,7 @@ public class World {
         }
     }
 
-    Entity getEntityById(String id) {
+    Entity getEntityById(int id) {
         Entity entity = this.entities.get(id);
         if (null != entity) {
             return entity;
@@ -538,12 +538,12 @@ public class World {
     }
 
     public void onMobMoveCallback(Mob mob) {
-        this.pushToAdjacentGroups(mob.getGroupId(), new Move(mob), "");
+        this.pushToAdjacentGroups(mob.getGroupId(), new Move(mob), 0);
         this.handleEntityGroupMembership(mob);
     }
 
     private void addNpc(int kind, int x, int y) {
-        Npc npc = new Npc("8" + x + "" + y, kind, x, y);
+        Npc npc = new Npc(Integer.parseInt("8" + x + "" + y), kind, x, y);
         this.addEntity(npc);
         this.npcs.put(npc.getId(), npc);
     }
@@ -556,7 +556,7 @@ public class World {
                     if (entity instanceof Player) {
                         self.pushToGroup(id, new Spawn(entity), entity.getId());
                     } else {
-                        self.pushToGroup(id, new Spawn(entity), null);
+                        self.pushToGroup(id, new Spawn(entity), 0);
                     }
                 }
                 self.groups.get(id).getIncoming().clear();
@@ -565,13 +565,13 @@ public class World {
     }
 
     private void processQueues() {
-        for (java.util.Map.Entry<String, List<Object>> entry : this.outgoingQueues.entrySet()) {
-            String id = entry.getKey();
+        for (java.util.Map.Entry<Integer, List<Object>> entry : this.outgoingQueues.entrySet()) {
+            int id = entry.getKey();
             if (this.outgoingQueues.get(id).size() != 0) {
                 List<Object> val = this.outgoingQueues.get(id);
                 String msg = JSON.toJSONString(val);
                 // send
-                GateConnection conn = GateConnectionMap.getGateConnection(Long.parseLong(id));
+                GateConnection conn = GateConnectionMap.getGateConnection((long) id);
                 if (conn != null && conn.getCtx() != null) {
                     conn.getCtx().writeAndFlush(msg);
                 }
@@ -595,10 +595,10 @@ public class World {
         World self = this;
         if (null != item) {
             item.handleDeSpawn(10000,
-                    () -> self.pushToAdjacentGroups(item.getGroupId(), new Blink(item.getId()), ""),
+                    () -> self.pushToAdjacentGroups(item.getGroupId(), new Blink(item.getId()), 0),
                     4000,
                     () -> {
-                        self.pushToAdjacentGroups(item.getGroupId(), new Destroy(item.getId()), "");
+                        self.pushToAdjacentGroups(item.getGroupId(), new Destroy(item.getId()), 0);
                         self.removeEntity(item);
                     });
         }
@@ -634,7 +634,7 @@ public class World {
      * The mob will no longer be registered as an attacker of its current target.
      */
     private void clearMobAggroLink(Mob mob) {
-        if (null != mob && null != mob.getTargetId()) {
+        if (null != mob && 0 != mob.getTargetId()) {
             Entity player = this.getEntityById(mob.getTargetId());
             if (null != player) {
                 assert player instanceof Player;
@@ -653,7 +653,7 @@ public class World {
         this.mobs.put(mob.getId(), mob);
     }
 
-    void handleMobHate(String mobId, String playerId, int hatePoints) {
+    void handleMobHate(int mobId, int playerId, int hatePoints) {
         Mob mob = (Mob) this.getEntityById(mobId);
         Player player = (Player) this.getEntityById(playerId);
         if (null != mob && null != player) {
@@ -708,15 +708,15 @@ public class World {
                 Player player = (Player) attacker;
                 this.pushToPlayer(player, new Kill(mob.getKind()));
                 // DeSpawn must be enqueued before the item drop
-                this.pushToAdjacentGroups(mob.getGroupId(), mob.deSpawn(), null);
+                this.pushToAdjacentGroups(mob.getGroupId(), mob.deSpawn(), 0);
                 if (null != item) {
-                    this.pushToAdjacentGroups(mob.getGroupId(), mob.drop(item), null);
+                    this.pushToAdjacentGroups(mob.getGroupId(), mob.drop(item), 0);
                     this.handleItemDeSpawn(item);
                 }
             }
             if (character.getType().equals("player")) {
                 this.handlePlayerVanish((Player) character);
-                this.pushToAdjacentGroups(character.getGroupId(), character.deSpawn(), null);
+                this.pushToAdjacentGroups(character.getGroupId(), character.deSpawn(), 0);
             }
             this.removeEntity(character);
         }
@@ -744,8 +744,8 @@ public class World {
         return this.addItem(this.createItem(Types.getKindFromString(itemName), mob.getX(), mob.getY()));
     }
 
-    void pushSpawnsToPlayer(Player player, List<String> ids) {
-        for (String id : ids) {
+    void pushSpawnsToPlayer(Player player, List<Integer> ids) {
+        for (int id : ids) {
             Entity entity = this.getEntityById(id);
             if (null != entity) {
                 this.pushToPlayer(player, new Spawn(entity));
@@ -762,7 +762,7 @@ public class World {
     }
 
     void handleOpenedChest(Chest chest, Player player) {
-        this.pushToAdjacentGroups(chest.getGroupId(), chest.deSpawn(), null);
+        this.pushToAdjacentGroups(chest.getGroupId(), chest.deSpawn(), 0);
         this.removeEntity(chest);
         int kind = chest.getRandomItem();
         if (kind > 0) {
@@ -778,13 +778,13 @@ public class World {
     }
 
     public void updatePopulation(int totalPlayers) {
-        this.pushBroadcast(new Population(this.playerCount, totalPlayers != 0 ? totalPlayers : this.playerCount), null);
+        this.pushBroadcast(new Population(this.playerCount, totalPlayers != 0 ? totalPlayers : this.playerCount), 0);
     }
 
-    private void pushBroadcast(SerializeAble message, String ignoredPlayerId) {
-        for (java.util.Map.Entry<String, List<Object>> entry : this.outgoingQueues.entrySet()) {
-            String id = entry.getKey();
-            if (!id.equals(ignoredPlayerId)) {
+    private void pushBroadcast(SerializeAble message, int ignoredPlayerId) {
+        for (java.util.Map.Entry<Integer, List<Object>> entry : this.outgoingQueues.entrySet()) {
+            int id = entry.getKey();
+            if (id != ignoredPlayerId) {
                 this.outgoingQueues.get(id).add(message.serialize());
             }
         }

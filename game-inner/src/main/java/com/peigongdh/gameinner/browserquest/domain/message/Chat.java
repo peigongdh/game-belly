@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Chat implements SerializeAble {
 
-    private String playerId;
+    private int playerId;
 
     private String msg;
 
-    public Chat(String playerId, String msg) {
+    public Chat(int playerId, String msg) {
         this.playerId = playerId;
         this.msg = msg;
     }

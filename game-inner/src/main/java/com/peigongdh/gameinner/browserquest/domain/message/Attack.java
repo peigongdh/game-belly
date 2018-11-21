@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Attack implements SerializeAble {
 
-    private String attackerId;
+    private int attackerId;
 
-    private String targetId;
+    private int targetId;
 
-    public Attack(String attackerId, String targetId) {
+    public Attack(int attackerId, int targetId) {
         this.attackerId = attackerId;
         this.targetId = targetId;
     }
@@ -23,9 +23,5 @@ public class Attack implements SerializeAble {
         list.add(this.attackerId);
         list.add(this.targetId);
         return list;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new Attack("1", "2").serialize());
     }
 }

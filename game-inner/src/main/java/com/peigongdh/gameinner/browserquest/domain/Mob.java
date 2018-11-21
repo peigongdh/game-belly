@@ -99,7 +99,7 @@ public class Mob extends Character {
         this.moveCallback = moveCallback;
     }
 
-    public Mob(String id, int kind, int x, int y) {
+    public Mob(int id, int kind, int x, int y) {
         super(id, "mob", kind, x, y);
         this.spawningX = x;
         this.spawningY = y;
@@ -121,19 +121,19 @@ public class Mob extends Character {
         this.handleReSpawn();
     }
 
-    public void receiveDamage(int points, String playerId) {
+    public void receiveDamage(int points, int playerId) {
         this.setHitPoints(this.getHitPoints() - points);
     }
 
-    private boolean hates(String playerId) {
-        return Util.any(this.hateList, hate -> hate.getId().equals(playerId));
+    private boolean hates(int playerId) {
+        return Util.any(this.hateList, hate -> hate.getId() == playerId);
         // or use stream anyMatch
         // return this.hateList.stream().anyMatch(hate -> hate.getId() == playerId);
     }
 
-    void increaseHateFor(String playerId, int points) {
+    void increaseHateFor(int playerId, int points) {
         if (this.hates(playerId)) {
-            Hate h = Util.detect(this.hateList, hate -> hate.getId().equals(playerId));
+            Hate h = Util.detect(this.hateList, hate -> hate.getId() == playerId);
             if (null != h) {
                 h.setHate(h.getHate() + points);
             }
@@ -142,8 +142,8 @@ public class Mob extends Character {
         }
     }
 
-    String getHatedPlayerId(int hateRank) {
-        String playerId;
+    int getHatedPlayerId(int hateRank) {
+        int playerId;
         int i;
         int size = this.hateList.size();
         if (hateRank > 0 && hateRank <= size) {
@@ -156,8 +156,8 @@ public class Mob extends Character {
         return playerId;
     }
 
-    public void forgetPlayer(String playerId, int duration) {
-        this.hateList = Util.reject(this.hateList, hate -> hate.getId().equals(playerId));
+    public void forgetPlayer(int playerId, int duration) {
+        this.hateList = Util.reject(this.hateList, hate -> hate.getId() == playerId);
         // or use stream filter
         // this.hateList = this.hateList.stream().filter(hate -> hate.getId() != playerId).collect(Collectors.toList());
         if (this.hateList.isEmpty()) {
