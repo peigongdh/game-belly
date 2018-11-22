@@ -513,7 +513,7 @@ public class World {
         Group group = this.groups.get(groupId);
         if (null != group) {
             for (Integer playerId : group.getPlayerIds()) {
-                if (0 != ignoredPlayerId && !playerId.equals(ignoredPlayerId)) {
+                if (!playerId.equals(ignoredPlayerId)) {
                     this.pushToPlayer((Player) this.getEntityById(playerId), message);
                 }
             }
@@ -669,7 +669,7 @@ public class World {
     private void chooseMobTarget(Mob mob, int hateRank) {
         Player player = (Player) this.getEntityById(mob.getHatedPlayerId(hateRank));
         // If the mob is not already attacking the player, create an attack link between them.
-        if (null != player && null != player.getAttackers().get(mob.getId())) {
+        if (null != player && null == player.getAttackers().get(mob.getId())) {
             this.clearMobAggroLink(mob);
             player.addAttacker(mob);
             mob.setTargetId(player.getId());
