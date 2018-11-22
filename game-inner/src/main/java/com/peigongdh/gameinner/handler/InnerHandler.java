@@ -23,12 +23,12 @@ public class InnerHandler extends SimpleChannelInboundHandler<String> {
         this.player = new Player(conn.getGateId().intValue(), ctx, world);
         this.player.getConnectCallback().run();
         this.world.getConnectCallback().accept(this.player);
+        this.world.updatePopulation(0);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String s) {
         this.player.onClientMessage(s);
-        this.world.updatePopulation(0);
     }
 
     @Override
