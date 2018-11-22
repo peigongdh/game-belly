@@ -1,6 +1,5 @@
 package com.peigongdh.gameinner.browserquest.domain.message;
 
-import com.alibaba.fastjson.JSON;
 import com.peigongdh.gameinner.browserquest.common.Constant;
 import com.peigongdh.gameinner.browserquest.domain.Entity;
 

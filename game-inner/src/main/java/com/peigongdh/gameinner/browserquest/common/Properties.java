@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Properties {
 
-    public static final Map<String, MobConfig> properties;
+    private static final Map<String, MobConfig> properties;
 
     static {
         properties = new HashMap<>();

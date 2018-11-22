@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 public class Types {
 
-    public static final Map<String, Map<Integer, String>> typesToString = new HashMap<>();
+    private static final Map<String, Map<Integer, String>> typesToString = new HashMap<>();
 
     static {
         Map<Integer, String> msg = new HashMap<>();
