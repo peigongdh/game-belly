@@ -115,6 +115,7 @@ public class Properties {
         return Properties.properties.get(Types.getKindAsString(kind)).getHp();
     }
 
+    // return null if drop nothing
     public static String getRandomDropItemName(String kind) {
         MobConfig config = Properties.properties.get(kind);
         int v = new Random().nextInt(101);

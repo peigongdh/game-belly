@@ -703,12 +703,13 @@ public class World {
         if (character.getHitPoints() <= 0) {
             if (character.getType().equals("mob")) {
                 Mob mob = (Mob) character;
-                Item item = this.getDroppedItem(mob);
 
                 Player player = (Player) attacker;
                 this.pushToPlayer(player, new Kill(mob.getKind()));
                 // DeSpawn must be enqueued before the item drop
                 this.pushToAdjacentGroups(mob.getGroupId(), mob.deSpawn(), 0);
+
+                Item item = this.getDroppedItem(mob);
                 if (null != item) {
                     this.pushToAdjacentGroups(mob.getGroupId(), mob.drop(item), 0);
                     this.handleItemDeSpawn(item);
@@ -741,7 +742,10 @@ public class World {
     private Item getDroppedItem(Mob mob) {
         String kind = Types.getKindAsString(mob.getKind());
         String itemName = Properties.getRandomDropItemName(kind);
-        return this.addItem(this.createItem(Types.getKindFromString(itemName), mob.getX(), mob.getY()));
+        if (null != itemName) {
+            return this.addItem(this.createItem(Types.getKindFromString(itemName), mob.getX(), mob.getY()));
+        }
+        return null;
     }
 
     void pushSpawnsToPlayer(Player player, List<Integer> ids) {
