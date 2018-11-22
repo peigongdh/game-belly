@@ -28,8 +28,6 @@ public class RegisterClient {
 
     private Bootstrap bootstrap;
 
-    private Channel channel;
-
     private boolean init() {
         boolean initSuccess = true;
         try {
@@ -66,7 +64,7 @@ public class RegisterClient {
 
     public void connect() {
         try {
-            channel = bootstrap.connect(registerHostName, registerPort).sync().channel();
+            Channel channel = bootstrap.connect(registerHostName, registerPort).sync().channel();
             logger.info("in game gate register client connect success");
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
