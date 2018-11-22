@@ -13,7 +13,7 @@ public class InnerHandler extends SimpleChannelInboundHandler<String> {
 
     private Player player;
 
-    public InnerHandler(World world) {
+    InnerHandler(World world) {
         this.world = world;
     }
 

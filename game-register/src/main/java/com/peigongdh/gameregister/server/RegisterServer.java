@@ -29,10 +29,6 @@ public class RegisterServer {
 
     private int port;
 
-    private ServerBootstrap serverBootstrap;
-
-    private Channel channel;
-
     private boolean init() {
         boolean initSuccess = true;
         try {
@@ -58,14 +54,14 @@ public class RegisterServer {
         EventLoopGroup masterGroup = new NioEventLoopGroup(masterCount);
         EventLoopGroup workerGroup = new NioEventLoopGroup(workerCount);
         try {
-            serverBootstrap = new ServerBootstrap();
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(masterGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new RegisterChannelInitializer())
                     .option(ChannelOption.SO_BACKLOG, backlog)
                     .childOption(ChannelOption.SO_KEEPALIVE, keepAlive)
                     .childOption(ChannelOption.TCP_NODELAY, true);
-            channel = serverBootstrap.bind(port).sync().channel();
+            Channel channel = serverBootstrap.bind(port).sync().channel();
             logger.info("register server start success");
             channel.closeFuture().sync();
         } catch (InterruptedException e) {

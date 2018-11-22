@@ -9,7 +9,7 @@ public class GateConnection {
 
     private static final AtomicLong gateIdGenerator = new AtomicLong(0);
 
-    public static AttributeKey<Long> GATE_ID = AttributeKey.valueOf("gateId");
+    static AttributeKey<Long> GATE_ID = AttributeKey.valueOf("gateId");
 
     private Long gateId;
 
@@ -21,7 +21,7 @@ public class GateConnection {
         return gateIdGenerator.incrementAndGet();
     }
 
-    public GateConnection(ChannelHandlerContext ctx) {
+    GateConnection(ChannelHandlerContext ctx) {
         this.gateId = generateGateId();
         this.ctx = ctx;
         this.ctx.channel().attr(GateConnection.GATE_ID).setIfAbsent(gateId);

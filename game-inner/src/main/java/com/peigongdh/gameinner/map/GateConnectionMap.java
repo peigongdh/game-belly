@@ -10,9 +10,9 @@ public class GateConnectionMap {
 
     private static final Logger logger = LoggerFactory.getLogger(GateConnectionMap.class);
 
-    public static ConcurrentHashMap<Long, GateConnection> gateConnectionMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Long, GateConnection> gateConnectionMap = new ConcurrentHashMap<>();
 
-    public static GateConnection getGateConnection(ChannelHandlerContext ctx) {
+    private static GateConnection getGateConnection(ChannelHandlerContext ctx) {
         // FIXME: bug here when client left, NullPointerException
         Long gateId = ctx.channel().attr(GateConnection.GATE_ID).get();
         return getGateConnection(gateId);

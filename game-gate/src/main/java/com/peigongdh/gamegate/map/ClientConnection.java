@@ -10,7 +10,7 @@ public class ClientConnection {
     // FIXME: consider distributed env
     private static final AtomicLong clientIdGenerator = new AtomicLong(0);
 
-    public static AttributeKey<Long> CLIENT_ID = AttributeKey.valueOf("clientId");
+    static AttributeKey<Long> CLIENT_ID = AttributeKey.valueOf("clientId");
 
     private Long clientId;
 
@@ -22,7 +22,7 @@ public class ClientConnection {
         return clientIdGenerator.incrementAndGet();
     }
 
-    public ClientConnection(ChannelHandlerContext ctx) {
+    ClientConnection(ChannelHandlerContext ctx) {
         this.clientId = generateClientId();
         this.ctx = ctx;
         this.ctx.channel().attr(ClientConnection.CLIENT_ID).setIfAbsent(clientId);

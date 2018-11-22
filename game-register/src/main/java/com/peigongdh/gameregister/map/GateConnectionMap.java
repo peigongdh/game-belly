@@ -12,12 +12,12 @@ public class GateConnectionMap {
 
     public static ConcurrentHashMap<Long, GateConnection> gateConnectionMap = new ConcurrentHashMap<>();
 
-    public static GateConnection getGateConnection(ChannelHandlerContext ctx) {
+    private static GateConnection getGateConnection(ChannelHandlerContext ctx) {
         Long gateId = ctx.channel().attr(GateConnection.GATE_ID).get();
         return getGateConnection(gateId);
     }
 
-    public static GateConnection getGateConnection(Long gateId) {
+    private static GateConnection getGateConnection(Long gateId) {
         GateConnection conn = gateConnectionMap.get(gateId);
         if (conn != null) {
             return conn;

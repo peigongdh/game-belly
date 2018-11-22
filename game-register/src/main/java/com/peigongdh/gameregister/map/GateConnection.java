@@ -21,7 +21,7 @@ public class GateConnection {
         return gateIdGenerator.incrementAndGet();
     }
 
-    public GateConnection(ChannelHandlerContext ctx, String address) {
+    GateConnection(ChannelHandlerContext ctx, String address) {
         this.gateId = generateGateId();
         this.address = address;
         this.ctx = ctx;

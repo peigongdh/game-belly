@@ -12,12 +12,12 @@ public class InnerConnectionMap {
 
     public static ConcurrentHashMap<Long, InnerConnection> innerConnectionMap = new ConcurrentHashMap<>();
 
-    public static InnerConnection getInnerConnection(ChannelHandlerContext ctx) {
+    private static InnerConnection getInnerConnection(ChannelHandlerContext ctx) {
         Long innerId = ctx.channel().attr(InnerConnection.INNER_ID).get();
         return getInnerConnection(innerId);
     }
 
-    public static InnerConnection getInnerConnection(Long innerId) {
+    private static InnerConnection getInnerConnection(Long innerId) {
         InnerConnection conn = innerConnectionMap.get(innerId);
         if (conn != null) {
             return conn;

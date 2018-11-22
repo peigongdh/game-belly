@@ -30,14 +30,12 @@ public class RegisterHeartbeatHandler extends ChannelInboundHandlerAdapter {
             ctx.writeAndFlush(HEARTBEAT_SEQUENCE.duplicate())
                     .addListener((ChannelFutureListener) future -> {
                         if (!future.isSuccess()) {
-                            // try to reconnect
                             logger.info("try to reconnect");
                             registerClient.connect();
                         } else {
                             logger.info("client heartbeat success");
                         }
                     });
-            // .addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
         } else {
             super.userEventTriggered(ctx, evt);
         }

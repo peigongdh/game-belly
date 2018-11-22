@@ -10,14 +10,14 @@ public class ClientConnectionMap {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientConnectionMap.class);
 
-    public static ConcurrentHashMap<Long, ClientConnection> clientConnectionMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Long, ClientConnection> clientConnectionMap = new ConcurrentHashMap<>();
 
-    public static ClientConnection getClientConnection(ChannelHandlerContext ctx) {
+    private static ClientConnection getClientConnection(ChannelHandlerContext ctx) {
         Long clientId = ctx.channel().attr(ClientConnection.CLIENT_ID).get();
         return getClientConnection(clientId);
     }
 
-    public static ClientConnection getClientConnection(Long clientId) {
+    private static ClientConnection getClientConnection(Long clientId) {
         ClientConnection conn = clientConnectionMap.get(clientId);
         if (conn != null) {
             return conn;
