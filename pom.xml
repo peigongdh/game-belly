@@ -15,6 +15,7 @@
         <module>game-register</module>
         <module>game-inner</module>
         <module>game-client</module>
+        <module>game-web</module>
     </modules>
 
 
