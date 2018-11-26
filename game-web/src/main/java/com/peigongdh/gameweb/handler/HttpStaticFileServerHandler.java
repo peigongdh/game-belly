@@ -120,6 +120,11 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         }
 
         final String uri = request.uri();
+        // hard code path limit
+        if (! uri.startsWith("/web")) {
+            sendError(ctx, NOT_FOUND);
+            return;
+        }
         final String path = sanitizeUri(uri);
         if (path == null) {
             sendError(ctx, FORBIDDEN);
