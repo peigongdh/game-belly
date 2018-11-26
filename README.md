@@ -1,7 +1,7 @@
 # game-belly
 
-A toy game server framework by netty. 
+A toy game server framework by Netty. 
 
 Inside a RPG game revise from [BrowserQuest](https://github.com/mozilla/BrowserQuest).
 
-Rewrite server side code by java. 
+Rewrite server side code by Java. 
