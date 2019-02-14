@@ -71,9 +71,8 @@
             <version>1.2.51</version>
         </dependency>
         <dependency>
-            <groupId>com.zenjava</groupId>
-            <artifactId>javafx-maven-plugin</artifactId>
-            <version>1.5</version>
+            <groupId>com.oracle.javafx</groupId>
+            <artifactId>javafx</artifactId>
         </dependency>
 
     </dependencies>
