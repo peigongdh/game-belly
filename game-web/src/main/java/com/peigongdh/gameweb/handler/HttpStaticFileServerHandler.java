@@ -121,7 +121,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
 
         final String uri = request.uri();
         // hard code path limit
-        if (! uri.startsWith("/web")) {
+        if (!uri.startsWith("/web")) {
             sendError(ctx, NOT_FOUND);
             return;
         }
@@ -280,12 +280,11 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         }
 
         // Get file from resources folder
-        ClassLoader classLoader = HttpStaticFileServerHandler.class.getClassLoader();
-        URL url = classLoader.getResource(uri.substring(1));
+        URL url = HttpStaticFileServerHandler.class.getClassLoader().getResource("");
         if (url == null) {
             return null;
         }
-        return url.getFile();
+        return url.getPath() + uri;
     }
 
     private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[^-\\._]?[^<>&\\\"]*");
