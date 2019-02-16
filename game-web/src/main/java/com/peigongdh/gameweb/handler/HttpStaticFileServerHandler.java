@@ -130,13 +130,13 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
             return;
         }
 
-        final URL url = sanitizeUri(uri);
+        final String url = sanitizeUri(uri);
         if (url == null) {
             sendError(ctx, FORBIDDEN);
             return;
         }
 
-        File file = new File(url.toURI());
+        File file = new File(url);
         if (file.isHidden() || !file.exists()) {
             sendError(ctx, NOT_FOUND);
             return;
@@ -255,7 +255,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
 
     private static final Pattern INSECURE_URI = Pattern.compile(".*[<>&\"].*");
 
-    private static URL sanitizeUri(String uri) {
+    private static String sanitizeUri(String uri) {
         // Decode the path.
         try {
             uri = URLDecoder.decode(uri, "UTF-8");
@@ -281,7 +281,8 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         }
 
         // Get file from resources folder
-        return HttpStaticFileServerHandler.class.getClassLoader().getResource(uri.substring(1));
+        // note: should use toExternalForm if in jar
+        return Objects.requireNonNull(HttpStaticFileServerHandler.class.getClassLoader().getResource(uri.substring(1))).toExternalForm();
     }
 
     private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[^-\\._]?[^<>&\\\"]*");
