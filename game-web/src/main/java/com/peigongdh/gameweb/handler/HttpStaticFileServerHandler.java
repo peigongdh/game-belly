@@ -267,7 +267,8 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         }
 
         // Convert file separators.
-        uri = uri.replace('/', File.separatorChar);
+        // note: remove uri.replace sometimes ?
+        // uri = uri.replace('/', File.separatorChar);
 
         // Simplistic dumb security check.
         // You will have to do something serious in the production environment.
