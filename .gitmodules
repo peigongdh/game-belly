@@ -1,0 +1,3 @@
+[submodule "browser-quest-client"]
+	path = browser-quest-client
+	url = git@github.com:peigongdh/browser-quest-client.git
