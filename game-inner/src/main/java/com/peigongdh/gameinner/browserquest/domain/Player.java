@@ -9,7 +9,8 @@ import com.peigongdh.gameinner.browserquest.common.Types;
 import com.peigongdh.gameinner.browserquest.domain.message.*;
 import com.peigongdh.gameinner.browserquest.util.Util;
 import io.netty.channel.ChannelHandlerContext;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -414,13 +415,13 @@ public class Player extends Character {
 
     void broadcast(SerializeAble message, boolean ignoreSelf) {
         if (null != this.broadcastCallback) {
-            this.broadcastCallback.accept(new Pair<>(message, ignoreSelf));
+            this.broadcastCallback.accept(new ImmutablePair<>(message, ignoreSelf));
         }
     }
 
     void broadcastToZone(SerializeAble message, boolean ignoreSelf) {
         if (null != this.broadcastZoneCallback) {
-            this.broadcastZoneCallback.accept(new Pair<>(message, ignoreSelf));
+            this.broadcastZoneCallback.accept(new ImmutablePair<>(message, ignoreSelf));
         }
     }
 

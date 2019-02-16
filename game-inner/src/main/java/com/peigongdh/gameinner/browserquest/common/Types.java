@@ -1,6 +1,7 @@
 package com.peigongdh.gameinner.browserquest.common;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -108,60 +109,60 @@ public class Types {
     public static final Map<String, Pair<Integer, String>> stringToKindsMap = new HashMap<>();
 
     static {
-        stringToKindsMap.put("warrior", new Pair<>(Constant.TYPES_ENTITIES_WARRIOR, "player"));
+        stringToKindsMap.put("warrior", new ImmutablePair<>(Constant.TYPES_ENTITIES_WARRIOR, "player"));
 
-        stringToKindsMap.put("rat", new Pair<>(Constant.TYPES_ENTITIES_RAT, "mob"));
-        stringToKindsMap.put("skeleton", new Pair<>(Constant.TYPES_ENTITIES_SKELETON, "mob"));
-        stringToKindsMap.put("goblin", new Pair<>(Constant.TYPES_ENTITIES_GOBLIN, "mob"));
-        stringToKindsMap.put("ogre", new Pair<>(Constant.TYPES_ENTITIES_OGRE, "mob"));
-        stringToKindsMap.put("spectre", new Pair<>(Constant.TYPES_ENTITIES_SPECTRE, "mob"));
-        stringToKindsMap.put("deathknight", new Pair<>(Constant.TYPES_ENTITIES_DEATHKNIGHT, "mob"));
-        stringToKindsMap.put("crab", new Pair<>(Constant.TYPES_ENTITIES_CRAB, "mob"));
-        stringToKindsMap.put("snake", new Pair<>(Constant.TYPES_ENTITIES_SNAKE, "mob"));
-        stringToKindsMap.put("bat", new Pair<>(Constant.TYPES_ENTITIES_BAT, "mob"));
-        stringToKindsMap.put("wizard", new Pair<>(Constant.TYPES_ENTITIES_WIZARD, "mob"));
-        stringToKindsMap.put("eye", new Pair<>(Constant.TYPES_ENTITIES_EYE, "mob"));
-        stringToKindsMap.put("skeleton2", new Pair<>(Constant.TYPES_ENTITIES_SKELETON2, "mob"));
-        stringToKindsMap.put("boss", new Pair<>(Constant.TYPES_ENTITIES_BOSS, "mob"));
+        stringToKindsMap.put("rat", new ImmutablePair<>(Constant.TYPES_ENTITIES_RAT, "mob"));
+        stringToKindsMap.put("skeleton", new ImmutablePair<>(Constant.TYPES_ENTITIES_SKELETON, "mob"));
+        stringToKindsMap.put("goblin", new ImmutablePair<>(Constant.TYPES_ENTITIES_GOBLIN, "mob"));
+        stringToKindsMap.put("ogre", new ImmutablePair<>(Constant.TYPES_ENTITIES_OGRE, "mob"));
+        stringToKindsMap.put("spectre", new ImmutablePair<>(Constant.TYPES_ENTITIES_SPECTRE, "mob"));
+        stringToKindsMap.put("deathknight", new ImmutablePair<>(Constant.TYPES_ENTITIES_DEATHKNIGHT, "mob"));
+        stringToKindsMap.put("crab", new ImmutablePair<>(Constant.TYPES_ENTITIES_CRAB, "mob"));
+        stringToKindsMap.put("snake", new ImmutablePair<>(Constant.TYPES_ENTITIES_SNAKE, "mob"));
+        stringToKindsMap.put("bat", new ImmutablePair<>(Constant.TYPES_ENTITIES_BAT, "mob"));
+        stringToKindsMap.put("wizard", new ImmutablePair<>(Constant.TYPES_ENTITIES_WIZARD, "mob"));
+        stringToKindsMap.put("eye", new ImmutablePair<>(Constant.TYPES_ENTITIES_EYE, "mob"));
+        stringToKindsMap.put("skeleton2", new ImmutablePair<>(Constant.TYPES_ENTITIES_SKELETON2, "mob"));
+        stringToKindsMap.put("boss", new ImmutablePair<>(Constant.TYPES_ENTITIES_BOSS, "mob"));
 
-        stringToKindsMap.put("sword1", new Pair<>(Constant.TYPES_ENTITIES_SWORD1, "weapon"));
-        stringToKindsMap.put("sword2", new Pair<>(Constant.TYPES_ENTITIES_SWORD2, "weapon"));
-        stringToKindsMap.put("axe", new Pair<>(Constant.TYPES_ENTITIES_AXE, "weapon"));
-        stringToKindsMap.put("redsword", new Pair<>(Constant.TYPES_ENTITIES_REDSWORD, "weapon"));
-        stringToKindsMap.put("bluesword", new Pair<>(Constant.TYPES_ENTITIES_BLUESWORD, "weapon"));
-        stringToKindsMap.put("goldensword", new Pair<>(Constant.TYPES_ENTITIES_GOLDENSWORD, "weapon"));
-        stringToKindsMap.put("morningstar", new Pair<>(Constant.TYPES_ENTITIES_MORNINGSTAR, "weapon"));
+        stringToKindsMap.put("sword1", new ImmutablePair<>(Constant.TYPES_ENTITIES_SWORD1, "weapon"));
+        stringToKindsMap.put("sword2", new ImmutablePair<>(Constant.TYPES_ENTITIES_SWORD2, "weapon"));
+        stringToKindsMap.put("axe", new ImmutablePair<>(Constant.TYPES_ENTITIES_AXE, "weapon"));
+        stringToKindsMap.put("redsword", new ImmutablePair<>(Constant.TYPES_ENTITIES_REDSWORD, "weapon"));
+        stringToKindsMap.put("bluesword", new ImmutablePair<>(Constant.TYPES_ENTITIES_BLUESWORD, "weapon"));
+        stringToKindsMap.put("goldensword", new ImmutablePair<>(Constant.TYPES_ENTITIES_GOLDENSWORD, "weapon"));
+        stringToKindsMap.put("morningstar", new ImmutablePair<>(Constant.TYPES_ENTITIES_MORNINGSTAR, "weapon"));
 
-        stringToKindsMap.put("firefox", new Pair<>(Constant.TYPES_ENTITIES_FIREFOX, "armor"));
-        stringToKindsMap.put("clotharmor", new Pair<>(Constant.TYPES_ENTITIES_CLOTHARMOR, "armor"));
-        stringToKindsMap.put("leatherarmor", new Pair<>(Constant.TYPES_ENTITIES_LEATHERARMOR, "armor"));
-        stringToKindsMap.put("mailarmor", new Pair<>(Constant.TYPES_ENTITIES_MAILARMOR, "armor"));
-        stringToKindsMap.put("platearmor", new Pair<>(Constant.TYPES_ENTITIES_PLATEARMOR, "armor"));
-        stringToKindsMap.put("redarmor", new Pair<>(Constant.TYPES_ENTITIES_REDARMOR, "armor"));
-        stringToKindsMap.put("goldenarmor", new Pair<>(Constant.TYPES_ENTITIES_GOLDENARMOR, "armor"));
+        stringToKindsMap.put("firefox", new ImmutablePair<>(Constant.TYPES_ENTITIES_FIREFOX, "armor"));
+        stringToKindsMap.put("clotharmor", new ImmutablePair<>(Constant.TYPES_ENTITIES_CLOTHARMOR, "armor"));
+        stringToKindsMap.put("leatherarmor", new ImmutablePair<>(Constant.TYPES_ENTITIES_LEATHERARMOR, "armor"));
+        stringToKindsMap.put("mailarmor", new ImmutablePair<>(Constant.TYPES_ENTITIES_MAILARMOR, "armor"));
+        stringToKindsMap.put("platearmor", new ImmutablePair<>(Constant.TYPES_ENTITIES_PLATEARMOR, "armor"));
+        stringToKindsMap.put("redarmor", new ImmutablePair<>(Constant.TYPES_ENTITIES_REDARMOR, "armor"));
+        stringToKindsMap.put("goldenarmor", new ImmutablePair<>(Constant.TYPES_ENTITIES_GOLDENARMOR, "armor"));
 
-        stringToKindsMap.put("flask", new Pair<>(Constant.TYPES_ENTITIES_FLASK, "object"));
-        stringToKindsMap.put("cake", new Pair<>(Constant.TYPES_ENTITIES_CAKE, "object"));
-        stringToKindsMap.put("burger", new Pair<>(Constant.TYPES_ENTITIES_BURGER, "object"));
-        stringToKindsMap.put("chest", new Pair<>(Constant.TYPES_ENTITIES_CHEST, "object"));
-        stringToKindsMap.put("firepotion", new Pair<>(Constant.TYPES_ENTITIES_FIREPOTION, "object"));
+        stringToKindsMap.put("flask", new ImmutablePair<>(Constant.TYPES_ENTITIES_FLASK, "object"));
+        stringToKindsMap.put("cake", new ImmutablePair<>(Constant.TYPES_ENTITIES_CAKE, "object"));
+        stringToKindsMap.put("burger", new ImmutablePair<>(Constant.TYPES_ENTITIES_BURGER, "object"));
+        stringToKindsMap.put("chest", new ImmutablePair<>(Constant.TYPES_ENTITIES_CHEST, "object"));
+        stringToKindsMap.put("firepotion", new ImmutablePair<>(Constant.TYPES_ENTITIES_FIREPOTION, "object"));
 
-        stringToKindsMap.put("guard", new Pair<>(Constant.TYPES_ENTITIES_GUARD, "npc"));
-        stringToKindsMap.put("villagegirl", new Pair<>(Constant.TYPES_ENTITIES_VILLAGEGIRL, "npc"));
-        stringToKindsMap.put("villager", new Pair<>(Constant.TYPES_ENTITIES_VILLAGER, "npc"));
-        stringToKindsMap.put("coder", new Pair<>(Constant.TYPES_ENTITIES_CODER, "npc"));
-        stringToKindsMap.put("scientist", new Pair<>(Constant.TYPES_ENTITIES_SCIENTIST, "npc"));
-        stringToKindsMap.put("priest", new Pair<>(Constant.TYPES_ENTITIES_PRIEST, "npc"));
-        stringToKindsMap.put("king", new Pair<>(Constant.TYPES_ENTITIES_KING, "npc"));
-        stringToKindsMap.put("rick", new Pair<>(Constant.TYPES_ENTITIES_RICK, "npc"));
-        stringToKindsMap.put("nyan", new Pair<>(Constant.TYPES_ENTITIES_NYAN, "npc"));
-        stringToKindsMap.put("sorcerer", new Pair<>(Constant.TYPES_ENTITIES_SORCERER, "npc"));
-        stringToKindsMap.put("agent", new Pair<>(Constant.TYPES_ENTITIES_AGENT, "npc"));
-        stringToKindsMap.put("octocat", new Pair<>(Constant.TYPES_ENTITIES_OCTOCAT, "npc"));
-        stringToKindsMap.put("beachnpc", new Pair<>(Constant.TYPES_ENTITIES_BEACHNPC, "npc"));
-        stringToKindsMap.put("forestnpc", new Pair<>(Constant.TYPES_ENTITIES_FORESTNPC, "npc"));
-        stringToKindsMap.put("desertnpc", new Pair<>(Constant.TYPES_ENTITIES_DESERTNPC, "npc"));
-        stringToKindsMap.put("lavanpc", new Pair<>(Constant.TYPES_ENTITIES_LAVANPC, "npc"));
+        stringToKindsMap.put("guard", new ImmutablePair<>(Constant.TYPES_ENTITIES_GUARD, "npc"));
+        stringToKindsMap.put("villagegirl", new ImmutablePair<>(Constant.TYPES_ENTITIES_VILLAGEGIRL, "npc"));
+        stringToKindsMap.put("villager", new ImmutablePair<>(Constant.TYPES_ENTITIES_VILLAGER, "npc"));
+        stringToKindsMap.put("coder", new ImmutablePair<>(Constant.TYPES_ENTITIES_CODER, "npc"));
+        stringToKindsMap.put("scientist", new ImmutablePair<>(Constant.TYPES_ENTITIES_SCIENTIST, "npc"));
+        stringToKindsMap.put("priest", new ImmutablePair<>(Constant.TYPES_ENTITIES_PRIEST, "npc"));
+        stringToKindsMap.put("king", new ImmutablePair<>(Constant.TYPES_ENTITIES_KING, "npc"));
+        stringToKindsMap.put("rick", new ImmutablePair<>(Constant.TYPES_ENTITIES_RICK, "npc"));
+        stringToKindsMap.put("nyan", new ImmutablePair<>(Constant.TYPES_ENTITIES_NYAN, "npc"));
+        stringToKindsMap.put("sorcerer", new ImmutablePair<>(Constant.TYPES_ENTITIES_SORCERER, "npc"));
+        stringToKindsMap.put("agent", new ImmutablePair<>(Constant.TYPES_ENTITIES_AGENT, "npc"));
+        stringToKindsMap.put("octocat", new ImmutablePair<>(Constant.TYPES_ENTITIES_OCTOCAT, "npc"));
+        stringToKindsMap.put("beachnpc", new ImmutablePair<>(Constant.TYPES_ENTITIES_BEACHNPC, "npc"));
+        stringToKindsMap.put("forestnpc", new ImmutablePair<>(Constant.TYPES_ENTITIES_FORESTNPC, "npc"));
+        stringToKindsMap.put("desertnpc", new ImmutablePair<>(Constant.TYPES_ENTITIES_DESERTNPC, "npc"));
+        stringToKindsMap.put("lavanpc", new ImmutablePair<>(Constant.TYPES_ENTITIES_LAVANPC, "npc"));
     }
 
     public static final Map<Integer, Integer> rankedWeapons = new HashMap<>();
@@ -296,7 +297,7 @@ public class Types {
 
     public static void forEachKind(Consumer<Pair<Integer, String>> callback) {
         for (Map.Entry<String, Pair<Integer, String>> entry : stringToKindsMap.entrySet()) {
-            callback.accept(new Pair<>(entry.getValue().getKey(), entry.getKey()));
+            callback.accept(new ImmutablePair<>(entry.getValue().getKey(), entry.getKey()));
         }
     }
 
