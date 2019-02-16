@@ -39,13 +39,10 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
+import io.netty.util.internal.SystemPropertyUtil;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
+import java.io.*;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -280,9 +277,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
             return null;
         }
 
-        // Get file from resources folder
-        // note: should use toExternalForm if in jar
-        return Objects.requireNonNull(HttpStaticFileServerHandler.class.getClassLoader().getResource(uri.substring(1))).toExternalForm();
+        return SystemPropertyUtil.get("user.dir") + File.separator + uri;
     }
 
     private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[^-\\._]?[^<>&\\\"]*");
