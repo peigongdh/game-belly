@@ -1,5 +1,5 @@
 kill:
-	ps aux | grep game- | awk {'print$$2'} | xargs kill
+	ps aux | grep game- | grep -v grep | awk {'print$$2'} | xargs kill
 
 build:
 	mvn clean compile package
