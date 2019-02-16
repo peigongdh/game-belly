@@ -39,7 +39,6 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
-import io.netty.util.internal.SystemPropertyUtil;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
@@ -131,13 +130,13 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
             return;
         }
 
-        final String path = sanitizeUri(uri);
-        if (path == null) {
+        final URL url = sanitizeUri(uri);
+        if (url == null) {
             sendError(ctx, FORBIDDEN);
             return;
         }
 
-        File file = new File(path);
+        File file = new File(url.toURI());
         if (file.isHidden() || !file.exists()) {
             sendError(ctx, NOT_FOUND);
             return;
@@ -190,17 +189,17 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
             response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
         }
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, file.length());
-        if (path.endsWith(".html")) {
+        if (uri.endsWith(".html")) {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
-        } else if (path.endsWith(".js")) {
+        } else if (uri.endsWith(".js")) {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/x-javascript");
-        } else if (path.endsWith(".css")) {
+        } else if (uri.endsWith(".css")) {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/css; charset=UTF-8");
-        } else if (path.endsWith(".json")) {
+        } else if (uri.endsWith(".json")) {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json");
-        } else if (path.endsWith(".png")) {
+        } else if (uri.endsWith(".png")) {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "image/png");
-        } else if (path.endsWith(".gif")) {
+        } else if (uri.endsWith(".gif")) {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "image/gif");
         }
 
@@ -256,7 +255,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
 
     private static final Pattern INSECURE_URI = Pattern.compile(".*[<>&\"].*");
 
-    private static String sanitizeUri(String uri) {
+    private static URL sanitizeUri(String uri) {
         // Decode the path.
         try {
             uri = URLDecoder.decode(uri, "UTF-8");
@@ -282,11 +281,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         }
 
         // Get file from resources folder
-        URL url = HttpStaticFileServerHandler.class.getClassLoader().getResource(uri.substring(1));
-        if (url == null) {
-            return null;
-        }
-        return url.getFile();
+        return HttpStaticFileServerHandler.class.getClassLoader().getResource(uri.substring(1));
     }
 
     private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[^-\\._]?[^<>&\\\"]*");
