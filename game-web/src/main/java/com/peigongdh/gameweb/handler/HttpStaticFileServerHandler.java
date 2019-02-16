@@ -39,6 +39,7 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
+import io.netty.util.internal.SystemPropertyUtil;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
@@ -125,13 +126,14 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
             sendError(ctx, NOT_FOUND);
             return;
         }
-        final String path = sanitizeUri(uri);
-        if (path == null) {
-            sendError(ctx, FORBIDDEN);
+
+        if ("favicon.ico".equals(uri)) {
             return;
         }
 
-        if ("favicon.ico".equals(uri)) {
+        final String path = sanitizeUri(uri);
+        if (path == null) {
+            sendError(ctx, FORBIDDEN);
             return;
         }
 
@@ -280,11 +282,11 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         }
 
         // Get file from resources folder
-        URL url = HttpStaticFileServerHandler.class.getClassLoader().getResource("");
+        URL url = HttpStaticFileServerHandler.class.getClassLoader().getResource(uri.substring(1));
         if (url == null) {
             return null;
         }
-        return url.getPath() + uri;
+        return url.getFile();
     }
 
     private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[^-\\._]?[^<>&\\\"]*");
