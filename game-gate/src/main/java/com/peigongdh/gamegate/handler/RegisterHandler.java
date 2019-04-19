@@ -1,17 +1,16 @@
 package com.peigongdh.gamegate.handler;
 
-import com.alibaba.fastjson.JSONObject;
+import com.peigongdh.apidoc.register.RegisterProto;
+import com.peigongdh.apidoc.register.RegisterProto.Connect;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class RegisterHandler extends SimpleChannelInboundHandler<String> {
+public class RegisterHandler extends SimpleChannelInboundHandler<byte[]> {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterHandler.class);
-
-    private static final String EVENT_GATE_CONNECT = "gate_connect";
 
     private String gateLanIp;
 
@@ -24,15 +23,15 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("event", EVENT_GATE_CONNECT);
-        jsonObject.put("address", gateLanIp + ':' + gateLanPort);
-        String json = jsonObject.toJSONString();
-        ctx.writeAndFlush(json);
+        Connect.Builder connect = Connect.newBuilder();
+        connect.setEvent(RegisterProto.EventType.GATE_CONNECT);
+        connect.setAddress(gateLanIp + ':' + gateLanPort);
+        byte[] msg = connect.build().toByteArray();
+        ctx.writeAndFlush(msg);
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) {
+    protected void channelRead0(ChannelHandlerContext ctx, byte[] msg) {
         logger.info("game gate register client channelRead0: {}", msg);
     }
 

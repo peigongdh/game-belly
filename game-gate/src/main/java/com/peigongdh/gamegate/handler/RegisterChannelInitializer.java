@@ -6,20 +6,15 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.codec.bytes.ByteArrayDecoder;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.CharsetUtil;
 
 public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final LengthFieldPrepender LENGTH_FIELD_PREPENDER = new LengthFieldPrepender(Integer.BYTES);
-
-    private static final StringDecoder STRING_DECODER = new StringDecoder(CharsetUtil.UTF_8);
-
-    private static final StringEncoder STRING_ENCODER = new StringEncoder(CharsetUtil.UTF_8);
 
     private RegisterClient registerClient;
 
@@ -41,8 +36,8 @@ public class RegisterChannelInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast(new RegisterHeartbeatHandler(registerClient));
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES));
         pipeline.addLast(LENGTH_FIELD_PREPENDER);
-        pipeline.addLast(STRING_DECODER);
-        pipeline.addLast(STRING_ENCODER);
+        pipeline.addLast(new ByteArrayEncoder());
+        pipeline.addLast(new ByteArrayDecoder());
         pipeline.addLast(new RegisterHandler(gateLanIp, gateLanPort));
     }
 }

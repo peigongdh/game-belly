@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package register;
+
+option java_package = "com.peigongdh.apidoc.register";
+option java_outer_classname = "RegisterProto";
+
+enum EventType {
+    GATE_CONNECT = 0;
+    INNER_CONNECT = 1;
+    BROADCAST_ADDRESS = 2;
+}
+
+message Connect {
+    EventType event = 1;
+    string Address = 2;
+}
+
+message BroadcastAddress {
+    EventType event = 1;
+    repeated string addresses = 2;
+}

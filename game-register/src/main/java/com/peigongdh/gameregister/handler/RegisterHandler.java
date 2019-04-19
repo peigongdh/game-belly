@@ -1,46 +1,35 @@
 package com.peigongdh.gameregister.handler;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.peigongdh.apidoc.register.RegisterProto;
 import com.peigongdh.gameregister.map.GateConnection;
 import com.peigongdh.gameregister.map.GateConnectionMap;
 import com.peigongdh.gameregister.map.InnerConnection;
 import com.peigongdh.gameregister.map.InnerConnectionMap;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@ChannelHandler.Sharable
-public class RegisterHandler extends SimpleChannelInboundHandler<String> {
+public class RegisterHandler extends SimpleChannelInboundHandler<byte[]> {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterHandler.class);
 
-    private static final String EVENT_GATE_CONNECT = "gate_connect";
-
-    private static final String EVENT_INNER_CONNECT = "inner_connect";
-
-    private static final String EVENT_BROADCAST_ADDRESS = "broadcast_address";
-
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) {
-        logger.info("channelRead0: {}", msg);
-        JSONObject msgObject = JSONObject.parseObject(msg);
-        String event = msgObject.getString("event");
-        if (event != null) {
-            switch (event) {
-                case EVENT_GATE_CONNECT:
-                    String address = msgObject.getString("address");
+    protected void channelRead0(ChannelHandlerContext ctx, byte[] msg) {
+        try {
+            RegisterProto.Connect msgObject = RegisterProto.Connect.parseFrom(msg);
+            logger.info("channelRead0: {}", msgObject.toString());
+            switch (msgObject.getEvent().getNumber()) {
+                case RegisterProto.EventType.GATE_CONNECT_VALUE:
+                    String address = msgObject.getAddress();
                     GateConnectionMap.addGateConnection(ctx, address);
-                    String gateAddress = this.getGateAddress();
+                    String gateAddress = new String(this.getGateAddress());
                     for (InnerConnection innerConnection : InnerConnectionMap.innerConnectionMap.values()) {
                         innerConnection.getCtx().writeAndFlush(gateAddress);
                     }
                     break;
-                case EVENT_INNER_CONNECT:
+                case RegisterProto.EventType.INNER_CONNECT_VALUE:
                     InnerConnectionMap.addInnerConnection(ctx);
                     ctx.writeAndFlush(this.getGateAddress());
                     break;
@@ -48,8 +37,8 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
                     logger.error("register unknown event: {}", msg);
                     ctx.close();
             }
-        } else {
-            logger.error("register unknown event: {}", msg);
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("unknown msg: {}", msg);
             ctx.close();
         }
     }
@@ -69,15 +58,13 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         logger.error("register client disconnected!");
     }
 
-    private String getGateAddress() {
-        JSONObject data = new JSONObject();
-        Set<String> addresses = new HashSet<>();
+    private byte[] getGateAddress() {
+        RegisterProto.BroadcastAddress.Builder broadcastAddress = RegisterProto.BroadcastAddress.newBuilder();
         for (GateConnection gateConnection : GateConnectionMap.gateConnectionMap.values()) {
-            addresses.add(gateConnection.getAddress());
+            broadcastAddress.addAddresses(gateConnection.getAddress());
         }
-        data.put("event", EVENT_BROADCAST_ADDRESS);
-        data.put("addresses", addresses);
-        return data.toJSONString();
+        broadcastAddress.setEvent(RegisterProto.EventType.BROADCAST_ADDRESS);
+        return broadcastAddress.build().toByteArray();
     }
 
     private void closeRegisterClient(ChannelHandlerContext ctx) {
@@ -89,7 +76,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
             GateConnectionMap.removeGateConnection(ctx);
         }
         if (ctx.channel().attr(InnerConnection.INNER_ID).get() != null) {
-            String gateAddress = this.getGateAddress();
+            String gateAddress = new String(this.getGateAddress());
             for (InnerConnection innerConnection : InnerConnectionMap.innerConnectionMap.values()) {
                 innerConnection.getCtx().writeAndFlush(gateAddress);
             }
